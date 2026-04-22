@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Correct Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row" id="shop"></div>
+    </div>
+
+    <!-- Correct Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const arrayOfObjects = [
+            { id: 101 },
+            { name: "alice", age: 25 },
+            { product: "laptop", brand: "techcrop", price: 1299.99 },
+            { title: "senior developer", department: "engineering", location: "new york", remote: true },
+            { username: "maylo", email: "maylo@example.com", verified: true, role: "admin", createdAt: "2023-01-15" },
+            { orderId: "ORD-2025-6789", customerName: "sara arjun", total: 249.95, status: "shipped", shippingAddress: "123 main st,ca", paymentMethod: "credit_card" },
+            { event: "Tech Conference 2025", date: "2025-06-15", time: "09:00", venue: "Convention Center", city: "San Francisco", speakers: 12, capacity: 500 },
+            { model: "X1-Pro", manufacturer: "AutoTech", year: 2025, color: "Midnight Blue", engine: "Electric", range: 380, autopilot: true, warrantyYears: 5 },
+            { flightNumber: "AA-1847", airline: "American Airlines", origin: "JFK", destination: "LAX", departure: "2025-11-12T14:30:00Z", arrival: "2025-11-12T17:45:00Z", duration: "5h 15m", gate: "B12", seat: "23A" },
+            { projectId: "PRJ-9001", projectName: "Quantum Dashboard", manager: "Dr. Elena Rodriguez", teamSize: 8, budget: 450000, startDate: "2025-03-01", deadline: "2025-12-20", priority: "high", technologies: "React, Node.js, Python", client: "GlobalTech Inc." }
+        ];
+
+        var column = '';
+        arrayOfObjects.map((product) => {
+            let temp = '';
+            for (let key in product) {
+                temp += `<b>${key}</b>: ${product[key]}<br/>`;
+            }
+
+            column += `
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+                <div class="card shadow">
+                    <div class="card-header">object</div>
+                    <div class="card-body">
+                        ${temp}
+                    </div>
+                </div>
+            </div>`;
+        });
+
+        document.getElementById('shop').innerHTML = column;
+    </script>
+</body>
+</html>

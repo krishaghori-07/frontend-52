@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>object cloning</h1>
+    <b>
+        use console
+    </b>
+    <script>
+        //create object
+        let course={
+            name:"MERN STACK",
+            duration:150,
+            fees:15000
+        };
+        console.log(course);
+        //copy object into another object
+        //wrong way
+        //let another way to create copy of object
+        let another_course={};
+        //use for each loop and copy each and every property and itsvalue into another_course object
+        for(let key in course)
+        {
+            console.log(key,course[key]);
+            another_course[key]=course[key];
+        }
+        another_course.duration=180;
+        another_course.fees=25000;
+        course.name="python&django"
+        console.log("course",course);
+        console.log("another course",another_course);
+    </script>
+</body>
+</html>
