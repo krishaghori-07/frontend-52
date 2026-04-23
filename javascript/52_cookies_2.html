@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>working with cookies</h1>
+    <h2>Click count <span id="myspan">0</span></h2>
+    <button type="button" onclick="increaseCount();">Click</button>
+    <script src="cookies.js"></script>
+    <script>
+        var count = null;
+        let counter = getCookie('counter');
+        if (counter === '') {
+            count = 0;
+        }
+        else {
+            count = parseInt(counter);
+            document.getElementById('myspan').innerHTML = count;
+        }
+        function increaseCount() {
+            count = count + 1;
+            setCookie('counter', count);
+            //update myspan using count
+            document.getElementById('myspan').innerHTML = count;
+        }
+    </script>
+</body>
+
+</html>
