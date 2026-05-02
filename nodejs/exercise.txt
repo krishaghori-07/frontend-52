@@ -1,0 +1,13 @@
+1) create nodejs server which returns name of states in given zone 
+    zone can be south north east west 
+
+    example 
+    http://localhost:5000/west 
+        gujarat
+        rajasthan
+        maharastra 
+
+2) create nodejs server which returns name of players of 2026 in given ipl team 
+    GT 
+    shubhnam gill, rashid khan etc 
+
