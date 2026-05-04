@@ -2,24 +2,24 @@
 var http = require('http');
 //create server 
 var server = http.createServer(function (request, response) {
-    
+
     console.log(request.url); //compulsory
-    response.writeHead(200,{'content-type':'html'});
+    response.writeHead(200, { 'content-type': 'html' });
 
     if (request.url === '/') {
-        response.write("Hello i am home page");
+        response.write("<html><body><h1>Hello i am home page</h1></body></html>");
     }
     else if (request.url === '/fruits') {
-        response.write("Apple banana mango pineapple graps");
+        response.write("<html><body><ul><li>Apple</li><li>banana</li><li>mango</li><li>pineapple</li><li>graps</li></ul></body></html>");
     }
     else if (request.url === '/vegetables') {
-        response.write("potato tomato lady finger garlic");
+        response.write("<html><body><ul><li>potato</li><li>tomato</li><li>lady-finger</li><li>garlic</li></ul></body></html>");
     }
     else if (request.url === '/grains') {
-        response.write("wheat rise corn etc");
+        response.write("<html><body><ul><li>wheat</li><li>rise</li><li>corn</li></ul></body></html>");
     }
     else {
-        response.write("sorry, we dont have any web page");
+        response.write("<html><body><h1>sorry, we dont have any web page</h1></body></html>");
     }
     response.end(); //compulsory
 });

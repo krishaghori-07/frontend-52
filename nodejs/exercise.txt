@@ -11,3 +11,9 @@
     GT 
     shubhnam gill, rashid khan etc 
 
+3) redevelop example 1 and return it as single line html output
+
+4) redevelop example 2 and return it as single line html output
+
+5) develop example which returns your resume as html page. 
+
