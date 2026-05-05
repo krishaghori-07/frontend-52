@@ -17,3 +17,6 @@
 
 5) develop example which returns your resume as html page. 
 
+6) create local module that has function getSquare and getQube which return square and qube of given numbers. export it and use it in another javascript file 
+
+7) create local module which has getSimpleInterest() and getCompoundInterest() function which return simple & compound interest and it in another javascript file.
