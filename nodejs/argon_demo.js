@@ -1,7 +1,6 @@
 //import argon2 module
 // npm install argon2
 const argon2 = require('argon2');
-
 async function hashPassword() {
     try {
         const hash = await argon2.hash("krisha1020");
