@@ -34,7 +34,7 @@ async function password_demo() {
 password_demo();
 
 //create object
-let mailer = new ms.Mail('ghanshyam@gmail.com', 'test subject', 'test message');
+let mailer = new ms.Mail('theeasylearn@gmail.com', 'test subject 1', 'test message 1');
 mailer.sendEmail();
 
 // () parenthesis
