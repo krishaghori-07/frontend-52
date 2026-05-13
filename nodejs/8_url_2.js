@@ -52,18 +52,49 @@ const countries = [
     { name: "Australia", continent: "Australia", population: 26000000, area: 7692024 },
     { name: "Netherlands", continent: "Europe", population: 18000000, area: 41543 }
 ];
+
+// get list of country of given continent
+//http://localhost:5000/country?continent=Asia
+
+// get list of country of where population is less then given value 
+//http://localhost:5000/country?population=128000000
+
+
+// get list of country of where area is greater then given value 
+//http://localhost:5000/country?area=3287263
+
 //create server 
 var server = http.createServer((request, response) => {
     var address = url.parse(request.url, true);
     console.log(address.href);
     response.writeHead(200, { 'content-type': 'application/json' });
-    var { continent } = address.query;
-    var output =  countries.filter((item) => {
-        if(item.continent == continent)
-        {
-            return item
-        }
-    });
+    var output = null;
+    var { continent, population, area } = address.query;
+    if (continent !== undefined) {
+        output = countries.filter((item) => {
+            if (item.continent == continent) {
+                return item
+            }
+        });
+    }
+    else if (population !== undefined) {
+        population = parseInt(population);
+        output = countries.filter((item) => {
+            if (item.population <= population)
+                return item;
+        });
+    }
+
+    else if (area !== undefined) {
+        area = parseInt(area);
+        output = countries.filter((item) => {
+            if (item.area >= area)
+                return item;
+        });
+    }
+    if (output === null || output.length === 0) {
+        output = [{ 'message': 'not found' }];
+    }
     response.write(JSON.stringify(output));
     response.end();
 });
