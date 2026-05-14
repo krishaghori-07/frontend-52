@@ -20,3 +20,10 @@
 6) create local module that has function getSquare and getQube which return square and qube of given numbers. export it and use it in another javascript file 
 
 7) create local module which has getSimpleInterest() and getCompoundInterest() function which return simple & compound interest and it in another javascript file.
+
+8) Create restaurant site which should have 5 pages (using bootstrap do not use ai ) & load the page from files using fs & url module. if user send request for not existing page display 404 page.  
+    1) home 
+    2) Menu 
+    3) Gallery 
+    4) Book hall 
+    5) contact us 
