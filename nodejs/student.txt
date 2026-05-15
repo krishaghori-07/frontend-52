@@ -1,0 +1,14 @@
+name = jiya patel
+mobile =8862512857
+email = jiyapatel@gmail.com 
+message=I want to join your course. 
+
+name = ram patel
+mobile =1111112857
+email = rampatel@gmail.com 
+ message=I want to join your course. 
+ 
+name = Rashad Rice
+mobile =+1 (945) 692-1961
+email = sezus@mailinator.com 
+ message=Nesciunt quia et et 

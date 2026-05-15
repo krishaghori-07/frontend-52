@@ -39,18 +39,18 @@
             <div class="row">
                 <div class="col-lg-6">
                     <h2 class="mb-4">Get In Touch</h2>
-                    <form>
+                    <form method="get" action="http://localhost:5000/save">
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Your Name" required>
+                            <input name="name" type="text" class="form-control" placeholder="Your Name" required>
                         </div>
                         <div class="mb-3">
-                            <input type="email" class="form-control" placeholder="Email Address" required>
+                            <input name="email" type="email" class="form-control" placeholder="Email Address" required>
                         </div>
                         <div class="mb-3">
-                            <input type="tel" class="form-control" placeholder="Phone Number">
+                            <input name="mobile" type="tel" class="form-control" placeholder="Phone Number">
                         </div>
                         <div class="mb-3">
-                            <textarea class="form-control" rows="5" placeholder="Your Message"></textarea>
+                            <textarea name="message" class="form-control" rows="5" placeholder="Your Message"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary btn-lg px-5">Send Message</button>
                     </form>
