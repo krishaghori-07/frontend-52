@@ -1,3 +1,15 @@
 1) create 5 page website for Gym using bootstrap. define routes for each page and return web page as response for each page. define 404 page also. refer example 3_route.js
 
-2) 
+2) create route /product which can accept request by get post put & delete method. 
+     store id(auto generated),name, price, weight, size 
+        use get method to get all product
+        use post method to insert new product
+        use put method to update product using id (all fields except id can be updated)
+        use delete method to delete product using id 
+
+e) create route /users which can accept request by get post put & delete method. 
+     store id(auto generated) ,name, gender, dob, weight, email   
+        use get method to get all users
+        use post method to insert new users
+        use put method to update product using id (all fields except id can be updated)
+        use delete method to delete product using id 
