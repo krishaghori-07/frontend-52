@@ -7,9 +7,13 @@
         use put method to update product using id (all fields except id can be updated)
         use delete method to delete product using id 
 
-e) create route /users which can accept request by get post put & delete method. 
+3) create route /users which can accept request by get post put & delete method. 
      store id(auto generated) ,name, gender, dob, weight, email   
         use get method to get all users
         use post method to insert new users
         use put method to update product using id (all fields except id can be updated)
         use delete method to delete product using id 
+
+4) complete input validation in put and delete route in example 6
+5) redevelop exercise 3 and do input validation 
+6) redevelop exercise 3 and do input validation 
