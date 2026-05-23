@@ -1,0 +1,16 @@
+var express = require('express');
+var app = express();
+//get routes with inputs 
+app.get("/add/:num1/:num2", function (request, response) {
+    let num1 = request.params.num1;
+    let num2 = request.params.num2;
+
+    let addition = parseInt(num1) + parseInt(num2);
+    response.send("addition " + addition);
+});
+// task do subtraction, multiplication, division as above using get routes 
+app.use(function(request,response){
+    response.send("bad request. no such route exists...");
+});
+app.listen(5000);
+console.log('ready to accept request.');
