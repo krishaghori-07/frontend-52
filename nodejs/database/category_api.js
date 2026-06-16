@@ -16,24 +16,32 @@ app.post(CATEGORY, function (request, response) {
 
     var name = request.body.name;
     var detail = request.body.detail;
+    //check name and details are not empty 
 
-    sql = `insert into category 
-    (name,detail,photo) values 
-    ('${name}','${detail}','photo2.jpg')`;
+    if (name === undefined || detail === undefined) {
+        response.send([{ 'error': 'input missing' }])
+    }
+    else 
+    {
+        //parameterized queries (also known as prepared statements)
+        const sql = `insert into category (name,detail,photo) values (?,?,?)`;
+        //create list that has 3 items because there 3 question marks(place holder)
+        const data = [name,detail,'photo.jpg']
+        // run sql statement
+        connection.con.query(sql,data,function (error, result) {
+            //this function will run after sql statement executes if sql statement fails then error variable will be not null 
+            // if sql statement success then result variable be not null 
+            if (error != null) {
+                console.log(error);
+                response.status(500).json([{ 'error': 'Internal server error' }]);
+            }
+            else {
+                // no error
+                response.json([{ 'error': 'no' }, { 'success': 'yes' }, { 'message': 'category inserted' }])
+            }
+        });
+    }
 
-    // run sql statement
-    connection.con.query(sql, function (error, result) {
-        //this function will run after sql statement executes if sql statement fails then error variable will be not null 
-        // if sql statement success then result variable be not null 
-        if (error != null) {
-            console.log(error);
-            response.json([{ 'error': 'oops something went wrong' }]);
-        }
-        else {
-            // no error
-            response.json([{ 'error': 'no' }, { 'success': 'yes' }, { 'message': 'category' }])
-        }
-    });
 });
 
 app.put(CATEGORY, function (request, response) {
