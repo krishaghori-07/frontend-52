@@ -8,16 +8,35 @@ app.use(express.urlencoded({ 'extended': true }));
 app.use(bodyParser.json());
 
 const CATEGORY = "/category"; //route path/api address 
-app.get(CATEGORY, function (request, response) {
-    response.send('get request received');
+app.get(CATEGORY + '/:start', function (request, response) {
+    // select 25 rows from category table in descending order of id
+    let start;
+    if (request.params.start !== undefined)
+        start = parseInt(request.params.start);
+    else
+        start = 0;
+    var sql = "select * from category order by id desc limit ?,25";
+    var data = [start]
+    connection.con.query(sql,data, function (error, result, fields) {
+        if (error != null) {
+            console.log(error);
+            response.json([{ 'error': 'oops something went wrong, please try after sometimes' }])
+        }
+        else {
+            res = []; //empty list 
+            res.push({ 'error': 'no' }); //0th position
+            res.push({ 'total': result.length }) //1st position
+            res.push(result) //last result
+            response.json(res);
+        }
+
+    });
 });
 
 app.post(CATEGORY, function (request, response) {
-
     const name = request.body.name;
     const detail = request.body.detail;
     //check name and details are not empty 
-
     if (name === undefined || detail === undefined) {
         response.json([{ 'error': 'input missing' }])
     }
@@ -56,7 +75,7 @@ app.delete(CATEGORY, function (request, response) {
         // ? is called placeholder/parameter
         const sql = "delete from category where id=?";
         const data = [categoryid];
-        connection.con.query(sql,data,function (error, result) {
+        connection.con.query(sql, data, function (error, result) {
             if (error != null) {
                 console.log(error)
                 response.status(500).json([{ 'error': 'Internal server error' }]);
