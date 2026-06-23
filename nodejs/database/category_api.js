@@ -8,16 +8,32 @@ app.use(express.urlencoded({ 'extended': true }));
 app.use(bodyParser.json());
 
 const CATEGORY = "/category"; //route path/api address 
-app.get(CATEGORY + '/:start', function (request, response) {
+/*
+    localhost:5000/category
+    or 
+    localhost:5000/category/50
+    or 
+    localhost:5000/category/50/name
+*/
+app.get(`${CATEGORY}{/:start}{/:field}`, function (request, response) {
     // select 25 rows from category table in descending order of id
     let start;
     if (request.params.start !== undefined)
         start = parseInt(request.params.start);
     else
         start = 0;
-    var sql = "select * from category order by id desc limit ?,25";
+
+    let field;
+    if (request.params.field !== undefined) {
+        field = request.params.field
+    }
+    else {
+        field = 'id';
+    }
+    var sql = `select * from category order by ${field} desc limit ?,25`;
     var data = [start]
-    connection.con.query(sql,data, function (error, result, fields) {
+    console.log(start,field);
+    connection.con.query(sql, data, function (error, result, fields) {
         if (error != null) {
             console.log(error);
             response.json([{ 'error': 'oops something went wrong, please try after sometimes' }])
