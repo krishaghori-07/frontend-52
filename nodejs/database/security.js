@@ -15,7 +15,7 @@ class PasswordManager {
     }
     async comparePassword(plain_text_password, hashed_password) {
         try {
-            if (await argon2.verify(hashed_password,plain_text_password)) {
+            if (await argon2.verify(hashed_password,plain_text_password)==true) {
                 return true;
             } 
             else 
@@ -24,6 +24,7 @@ class PasswordManager {
             }
         } catch (err) {
             // internal failure
+            console.log(err);
         }
     }
 }
