@@ -1,4 +1,4 @@
-const argon2 = require ('argon2');
+const argon2 = require('argon2');
 class PasswordManager {
     constructor() {
         console.log('PasswordManager class constructor called.');
@@ -15,11 +15,10 @@ class PasswordManager {
     }
     async comparePassword(plain_text_password, hashed_password) {
         try {
-            if (await argon2.verify(hashed_password,plain_text_password)==true) {
+            if (await argon2.verify(hashed_password, plain_text_password) == true) {
                 return true;
-            } 
-            else 
-            {
+            }
+            else {
                 return false;
             }
         } catch (err) {
@@ -46,8 +45,8 @@ class PasswordManager {
         for (let i = 4; i < length; i++) {
             password += allChars[Math.floor(Math.random() * allChars.length)];
         }
-    // Shuffle the password to make it more random
-    return password.split('').sort(() => Math.random() - 0.5).join('');
-}
+        // Shuffle the password to make it more random
+        return password.split('').sort(() => Math.random() - 0.5).join('');
+    }
 }
 module.exports.PasswordManager = PasswordManager;

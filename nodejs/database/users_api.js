@@ -1,14 +1,11 @@
 //database connection import
-const connection = require('./connection')
-const security = require('./security');
-
-//import express 
-const express = require('express');
-var bodyParser = require('body-parser');
-
+import express from 'express';
+import bodyParser from 'body-parser';
+import * as connection from './connection.js';
+import security from './security.cjs';
+import sendEmail from './gmaildemo.js';
 
 var app = express();
-
 app.use(express.urlencoded({ 'extended': true }));
 app.use(bodyParser.json());
 const USERS = "/users"
@@ -167,7 +164,7 @@ app.post(USERS + "/forgot_password", function (request, response) {
     }
     else {
         var sql = "select * from users where email = ?";
-        data = [email]
+        var data = [email]
         connection.con.query(sql, data, function (error, result, fields) {
             if (error != null) {
                 console.log(error)
@@ -191,11 +188,11 @@ app.post(USERS + "/forgot_password", function (request, response) {
                         else {
                             response.json([{ 'error': 'no' }, { 'success': 'yes' }, { 'message': 'password recovered successfully check your email account for new password' }]);
                             // send original password as email to user 
-                            const mailer = require('./gmaildemo.js');
-                            subject = "password recovery email"
-                            message = "Congratulation, we have generated new password <br/> your new password is " + NewPassword;
+                            
+                            var subject = "password recovery email"
+                            var message = "Congratulation, we have generated new password <br/> your new password is " + NewPassword;
 
-                            mailer.sendEmail(email, subject, message);
+                            sendEmail(email, subject, message);
 
                         }
                     });
