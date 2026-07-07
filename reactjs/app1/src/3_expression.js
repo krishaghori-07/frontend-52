@@ -9,13 +9,13 @@ var num1 = 10;
 var num2 = 3;
 // create variable and store output into it 
 let output = (<div>
-    <h1 className='heading'>apply css class</h1>
+    <h1>Javascript expression (statement)</h1>
     <ul>
-        <li className='list-item'>num1 = {num1}  num2 = {num2}</li>
-        <li className='list-item'>Addition {num1+num2}</li>
-        <li className='list-item'>Subtraction {num1-num2}</li>
-        <li className='list-item'>Multiplication {num1*num2}</li>
-        <li className='list-item'>Division {num1/num2}</li>
+        <li>num1 = {num1}  num2 = {num2}</li>
+        <li>Addition {num1+num2}</li>
+        <li>Subtraction {num1-num2}</li>
+        <li>Multiplication {num1*num2}</li>
+        <li>Division {num1/num2}</li>
     </ul>
 </div>)
 const root = ReactDOM.createRoot(document.getElementById('root'));
