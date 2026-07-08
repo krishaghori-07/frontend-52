@@ -13,11 +13,12 @@
 5) create function that returns variable. which has below output. 
     display Cricket Players using bootstrap framework. 
     each Player should have name, dob, matches, runs, balls, 100s and 50s 
-    display 
+    display. 
         4 Player on extra large screen
         4 Player on large screen
         3 Player on medium screen
         2 Player on small screen
         1 Player on extra small screen
     display 11 players.
+
 
