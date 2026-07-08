@@ -2,21 +2,25 @@
 import React from 'react';
 // import virtual DOM
 import ReactDOM from 'react-dom/client';
-// import css file from src (optional)
-// always use ./ while importing files from src folder
-import './index.css';
-var num1 = 10; 
-var num2 = 3;
-// create variable and store output into it 
-let output = (<div>
-    <h1 className='heading'>apply css class</h1>
-    <ul>
-        <li className='list-item'>num1 = {num1}  num2 = {num2}</li>
-        <li className='list-item'>Addition {num1+num2}</li>
-        <li className='list-item'>Subtraction {num1-num2}</li>
-        <li className='list-item'>Multiplication {num1*num2}</li>
-        <li className='list-item'>Division {num1/num2}</li>
-    </ul>
-</div>)
+// create user defined function 
+function Website(title) {
+    let page = (
+        <div className='container'>
+            {/* this is container */}
+            <div className='row'>
+                {/* this is row */}
+                <div className="col-12">
+                    {/* this is col-12 */}
+                    <h1 className='text-uppercase text-danger'>{title}</h1>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit cumque alias repudiandae nam veniam dicta asperiores ratione obcaecati tempora, voluptas reiciendis accusamus quidem. Reiciendis doloremque fugit aspernatur dignissimos quasi delectus.
+                    </p>
+                </div>
+            </div>
+        </div>);
+        return page;
+}
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(output);
+// call function
+var title = "the easylearn academy"
+root.render(Website(title));

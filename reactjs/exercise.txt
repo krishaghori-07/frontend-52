@@ -1,0 +1,23 @@
+1) create your ATS friendly resume using bootstrap framework. 
+2) create register form using bootstrap 
+3) create login form using bootstrap
+4) create responsive page which should display products. 
+    each product should have name, price, description, photo (use img-fluid)
+    display 
+        6 product on extra large screen
+        4 product on large screen
+        3 product on medium screen
+        2 product on small screen
+        1 product on extra small screen
+
+5) create function that returns variable. which has below output. 
+    display Cricket Players using bootstrap framework. 
+    each Player should have name, dob, matches, runs, balls, 100s and 50s 
+    display 
+        4 Player on extra large screen
+        4 Player on large screen
+        3 Player on medium screen
+        2 Player on small screen
+        1 Player on extra small screen
+    display 11 players.
+
