@@ -31,9 +31,9 @@ function DigitalClock() {
             </div>
         </div>
     </div>);
-    return page;
+    root.render(page);
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
-// call function
-var title = "the easylearn academy"
-root.render(DigitalClock());
+// DigitalClock(); //run only once
+// call function at every 1 second = (1000 millisecond)
+setInterval(DigitalClock,1000);

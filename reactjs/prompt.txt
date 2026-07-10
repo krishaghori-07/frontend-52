@@ -1,0 +1,10 @@
+create one page modern bootstrap website that has below sections
+Menu (5 items)
+Slider (3 slides)
+About us (2 paragraph. each has approx 200 words)
+Dish(8 items) each item has photo,name,price, and weight
+Customer Testimonials (4 items) each feed back has name, detail, rating, Date
+Contact us (name, email, mobile, detail)
+footer (3 column)  1st column restaurant name, address, contactno) , 2nd column links, 3rd column social media icons.
+
+resturant name shreeji resturant

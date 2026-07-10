@@ -22,5 +22,5 @@ function Website(title) {
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
 // call function
-var title = "the easylearn academy"
+var title = "the easylearn academy";
 root.render(Website(title));
