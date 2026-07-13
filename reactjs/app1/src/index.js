@@ -144,6 +144,26 @@ function Aboutus() {
         </div>
     </section>)
 }
+// reusable function components 
+// props has all the properties 
+function DishItem(props) {
+    return (<div className="col-xl-3 col-lg-4 col-md-6">
+        <div className="dish-card">
+            <div className="dish-img-wrapper">
+                <span className="dish-weight">{props.weight}</span>
+                <img src={props.photo} alt={props.name} onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2021/12/1.jpg';" />
+            </div>
+            <div className="dish-body">
+                <h4 className="dish-title">{props.name}</h4>
+                <p className="dish-description">{props.description}</p>
+                <div className="dish-footer">
+                    <span className="dish-price">₹{props.price}</span>
+                    <a href="#contact" className="btn-order-dish"><i className="fa-solid fa-arrow-right" /></a>
+                </div>
+            </div>
+        </div>
+    </div>)
+}
 function Dishes() {
     return (<section id="dishes" className="section-padding">
         <div className="container">
@@ -151,146 +171,52 @@ function Dishes() {
                 <span className="section-subtitle">Chef's Recommendations</span>
                 <h2 className="section-main-title">Popular Dishes <i className="fa-solid fa-utensils" /></h2>
             </div>
-            <div className="row g-4">
-                {/* Dish 1 */}
-                <div className="col-xl-3 col-lg-4 col-md-6">
-                    <div className="dish-card">
-                        <div className="dish-img-wrapper">
-                            <span className="dish-weight">300g</span>
-                            <img src="images/dish1.jpg" alt="Garlic Bread Combo" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2021/12/1.jpg';" />
-                        </div>
-                        <div className="dish-body">
-                            <h4 className="dish-title">Garlic Bread Combo</h4>
-                            <p className="dish-description">Golden toasted bread slices topped with minced garlic and melted cheese, served with a delicious dipping sauce.</p>
-                            <div className="dish-footer">
-                                <span className="dish-price">₹175</span>
-                                <a href="#contact" className="btn-order-dish"><i className="fa-solid fa-arrow-right" /></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Dish 2 */}
-                <div className="col-xl-3 col-lg-4 col-md-6">
-                    <div className="dish-card">
-                        <div className="dish-img-wrapper">
-                            <span className="dish-weight">350g</span>
-                            <img src="images/dish2.jpg" alt="Manchurian Combo" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2021/12/2.jpg';" />
-                        </div>
-                        <div className="dish-body">
-                            <h4 className="dish-title">Manchurian Combo</h4>
-                            <p className="dish-description">Savory vegetable Manchurian balls tossed in sweet &amp; sour spicy garlic sauce, served alongside vegetable fried rice.</p>
-                            <div className="dish-footer">
-                                <span className="dish-price">₹175</span>
-                                <a href="#contact" className="btn-order-dish"><i className="fa-solid fa-arrow-right" /></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Dish 3 */}
-                <div className="col-xl-3 col-lg-4 col-md-6">
-                    <div className="dish-card">
-                        <div className="dish-img-wrapper">
-                            <span className="dish-weight">400g</span>
-                            <img src="images/dish3.jpg" alt="Stuffed Paratha Combo" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2021/12/3.jpg';" />
-                        </div>
-                        <div className="dish-body">
-                            <h4 className="dish-title">Stuffed Paratha Combo</h4>
-                            <p className="dish-description">Flaky tandoori flatbread stuffed with spiced potato mash, served with rich cream curd, local pickle and melting butter.</p>
-                            <div className="dish-footer">
-                                <span className="dish-price">₹175</span>
-                                <a href="#contact" className="btn-order-dish"><i className="fa-solid fa-arrow-right" /></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Dish 4 */}
-                <div className="col-xl-3 col-lg-4 col-md-6">
-                    <div className="dish-card">
-                        <div className="dish-img-wrapper">
-                            <span className="dish-weight">380g</span>
-                            <img src="images/dish4.jpg" alt="Dal Jira Rice Combo" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2021/12/4.jpg';" />
-                        </div>
-                        <div className="dish-body">
-                            <h4 className="dish-title">Dal Jira Rice Combo</h4>
-                            <p className="dish-description">Comforting yellow lentil soup tempered with garlic and cumin, served with long grain cumin-flavored basmati rice.</p>
-                            <div className="dish-footer">
-                                <span className="dish-price">₹175</span>
-                                <a href="#contact" className="btn-order-dish"><i className="fa-solid fa-arrow-right" /></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Dish 5 */}
-                <div className="col-xl-3 col-lg-4 col-md-6">
-                    <div className="dish-card">
-                        <div className="dish-img-wrapper">
-                            <span className="dish-weight">450g</span>
-                            <img src="images/dish5.jpg" alt="Veg Handi" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2021/12/5.jpg';" />
-                        </div>
-                        <div className="dish-body">
-                            <h4 className="dish-title">Veg Handi</h4>
-                            <p className="dish-description">A colorful array of seasonal garden vegetables slow cooked in a traditional handi vessel with authentic rich tomato gravy.</p>
-                            <div className="dish-footer">
-                                <span className="dish-price">₹259</span>
-                                <a href="#contact" className="btn-order-dish"><i className="fa-solid fa-arrow-right" /></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Dish 6 */}
-                <div className="col-xl-3 col-lg-4 col-md-6">
-                    <div className="dish-card">
-                        <div className="dish-img-wrapper">
-                            <span className="dish-weight">450g</span>
-                            <img src="images/dish6.jpg" alt="Veg Toofani" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2021/12/6.jpg';" />
-                        </div>
-                        <div className="dish-body">
-                            <h4 className="dish-title">Veg Toofani</h4>
-                            <p className="dish-description">A fiery and flavor-packed mixed vegetable recipe cooked in thick, dark-spiced onion-tomato gravy for spice lovers.</p>
-                            <div className="dish-footer">
-                                <span className="dish-price">₹259</span>
-                                <a href="#contact" className="btn-order-dish"><i className="fa-solid fa-arrow-right" /></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Dish 7 */}
-                <div className="col-xl-3 col-lg-4 col-md-6">
-                    <div className="dish-card">
-                        <div className="dish-img-wrapper">
-                            <span className="dish-weight">500g</span>
-                            <img src="images/dish7.jpg" alt="Shriji Special" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2021/12/7.jpg';" />
-                        </div>
-                        <div className="dish-body">
-                            <h4 className="dish-title">Shriji Special</h4>
-                            <p className="dish-description">Our signature chef special dish containing fresh paneer cubes and garden vegetables prepared in rich cream-cashew gravy.</p>
-                            <div className="dish-footer">
-                                <span className="dish-price">₹289</span>
-                                <a href="#contact" className="btn-order-dish"><i className="fa-solid fa-arrow-right" /></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Dish 8 */}
-                <div className="col-xl-3 col-lg-4 col-md-6">
-                    <div className="dish-card">
-                        <div className="dish-img-wrapper">
-                            <span className="dish-weight">150g</span>
-                            <img src="images/dish8.jpg" alt="Cheese Garlic Naan" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2021/12/8.jpg';" />
-                        </div>
-                        <div className="dish-body">
-                            <h4 className="dish-title">Cheese Garlic Naan</h4>
-                            <p className="dish-description">Classic leavened flatbread topped with chopped garlic and coriander, stuffed with dynamic cheese and baked in clay tandoor.</p>
-                            <div className="dish-footer">
-                                <span className="dish-price">₹130</span>
-                                <a href="#contact" className="btn-order-dish"><i className="fa-solid fa-arrow-right" /></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            {/* show dishes here */}
+            {/* call DishItem function using DishItem tag */}
+            <div className="row">
+                <DishItem weight='311g' photo='images/1.jpg' name='Pavbhaji' price='150'
+                    description='Potato Tomato Onion Garlic Bread butter etc' />
+
+                <DishItem weight="350g" photo="images/dish2.jpg" name="Manchurian Combo" price="175" description="Savory vegetable Manchurian balls tossed in sweet &amp; sour spicy garlic sauce, served alongside vegetable fried rice." />
+
+                <DishItem weight="400g" photo="images/dish3.jpg" name="Stuffed Paratha Combo" price="175" description="Flaky tandoori flatbread stuffed with spiced potato mash, served with rich cream curd, local pickle and melting butter." />
+
+                <DishItem weight="380g" photo="images/dish4.jpg" name="Dal Jira Rice Combo" price="175" description="Comforting yellow lentil soup tempered with garlic and cumin, served with long grain cumin-flavored basmati rice." />
+
+                <DishItem weight="450g" photo="images/dish5.jpg" name="Veg Handi" price="259" description="A colorful array of seasonal garden vegetables slow cooked in a traditional handi vessel with authentic rich tomato gravy." />
+
+                <DishItem weight="450g" photo="images/dish6.jpg" name="Veg Toofani" price="259" description="A fiery and flavor-packed mixed vegetable recipe cooked in thick, dark-spiced onion-tomato gravy for spice lovers." />
+
+                <DishItem weight="500g" photo="images/dish7.jpg" name="Shriji Special" price="289" description="Our signature chef special dish containing fresh paneer cubes and garden vegetables prepared in rich cream-cashew gravy." />
+
+                <DishItem weight="150g" photo="images/dish8.jpg" name="Cheese Garlic Naan" price="130" description="Classic leavened flatbread topped with chopped garlic and coriander, stuffed with dynamic cheese and baked in clay tandoor." />
             </div>
         </div>
     </section>)
+}
+function TestimonialItem(props) {
+    return (<div className="col-lg-6">
+        <div className="testimonial-card">
+            <i className="fa-solid fa-quote-right testimonial-quote-icon" />
+            <div className="testimonial-rating">
+                <i className="fa-solid fa-star" />
+                <i className="fa-solid fa-star" />
+                <i className="fa-solid fa-star" />
+                <i className="fa-solid fa-star" />
+                <i className="fa-solid fa-star" />
+            </div>
+            <p className="testimonial-text">
+                {props.detail}
+            </p>
+            <div className="testimonial-user">
+                <img src={props.photo} alt={props.title} className="testimonial-avatar" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2020/12/testimonial1.png';" />
+                <div className="testimonial-info">
+                    <h5>{props.title}</h5>
+                    <span>Reviewed on: {props.date}</span>
+                </div>
+            </div>
+        </div>
+    </div>)
 }
 function Testimonials() {
     return (<section id="testimonials" className="section-padding">
@@ -299,99 +225,14 @@ function Testimonials() {
                 <span className="section-subtitle">Guest Feedbacks</span>
                 <h2 className="section-main-title">Testimonials <i className="fa-solid fa-star-half-stroke" /></h2>
             </div>
-            <div className="row g-4">
-                {/* Testimonial 1 */}
-                <div className="col-lg-6">
-                    <div className="testimonial-card">
-                        <i className="fa-solid fa-quote-right testimonial-quote-icon" />
-                        <div className="testimonial-rating">
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                        </div>
-                        <p className="testimonial-text">
-                            "Tried dal fry jeera rice, it's my first time at here. Food was good, quality and quantity both are perfect. Yet other dishes are pending to try. But just on dal fry i can bet food will be good. Staff is very humble, and friendly. They had resolved my all queries and had replied very politely. Sorry snap were not taken forgot it."
-                        </p>
-                        <div className="testimonial-user">
-                            <img src="images/testimonial1.png" alt="Oza Subir" className="testimonial-avatar" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2020/12/testimonial1.png';" />
-                            <div className="testimonial-info">
-                                <h5>Oza Subir</h5>
-                                <span>Reviewed on: October 14, 2023</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Testimonial 2 */}
-                <div className="col-lg-6">
-                    <div className="testimonial-card">
-                        <i className="fa-solid fa-quote-right testimonial-quote-icon" />
-                        <div className="testimonial-rating">
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                        </div>
-                        <p className="testimonial-text">
-                            "Shriji's has been epitome for quality food since years. Service and Hospitality being their best motto too. In the prevailing situation, Shriji's take utmost care from preparations to packaging and deliver food with all safety measures required. Whenever I think of a birthday or a house party or a garden party, it always is Shriji's. Thank-you Shriji's to make our special moments yet memorable."
-                        </p>
-                        <div className="testimonial-user">
-                            <img src="images/testimonial3.png" alt="Ketan Makwana" className="testimonial-avatar" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2020/12/testimonial3.png';" />
-                            <div className="testimonial-info">
-                                <h5>Ketan Makwana</h5>
-                                <span>Reviewed on: December 9, 2023</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Testimonial 3 */}
-                <div className="col-lg-6">
-                    <div className="testimonial-card">
-                        <i className="fa-solid fa-quote-right testimonial-quote-icon" />
-                        <div className="testimonial-rating">
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                        </div>
-                        <p className="testimonial-text">
-                            "Simply Best In Bhavnagar. No matter whether it's a Family Get Together, Social Get Together, Birthday Party, Casual Group Gathering. It is always excellent for all. The outdoor seating with garden vibes and warm lighting makes the dining experience truly exceptional and memorable."
-                        </p>
-                        <div className="testimonial-user">
-                            <img src="images/testimonial3.png" alt="Falgun M. Shah" className="testimonial-avatar" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2020/12/testimonial3.png';" />
-                            <div className="testimonial-info">
-                                <h5>Falgun M. Shah</h5>
-                                <span>Reviewed on: January 22, 2024</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Testimonial 4 */}
-                <div className="col-lg-6">
-                    <div className="testimonial-card">
-                        <i className="fa-solid fa-quote-right testimonial-quote-icon" />
-                        <div className="testimonial-rating">
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                            <i className="fa-solid fa-star" />
-                        </div>
-                        <p className="testimonial-text">
-                            "Had been to Shriji’s for the 5th time and every time it's a memorable time. The food service ambience and the location is so perfect that u can't miss it. For any family such location in the heart of the city and connected is an absolute blessing. 7stars rating to the entire hospitality team!"
-                        </p>
-                        <div className="testimonial-user">
-                            <img src="images/testimonial2.png" alt="Urvi K." className="testimonial-avatar" onerror="this.src='https://shrijisgardenrestaurant.com/wp-content/uploads/2020/12/testimonial2.png';" />
-                            <div className="testimonial-info">
-                                <h5>Urvi K.</h5>
-                                <span>Reviewed on: March 5, 2024</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div className='row g-4'>
+                <TestimonialItem title="Oza Subir" photo="images/testimonial1.png" date="October 14, 2023" detail="Tried dal fry jeera rice, it's my first time at here. Food was good, quality and quantity both are perfect. Yet other dishes are pending to try. But just on dal fry I can bet food will be good. Staff is very humble and friendly. They resolved all my queries politely. Sorry, I forgot to take photos." />
+
+                <TestimonialItem title="Ketan Makwana" photo="images/testimonial3.png" date="December 9, 2023" detail="Shriji's has been the epitome of quality food for years. Service and hospitality are their greatest strengths. They take utmost care from preparation to packaging and deliver food with all required safety measures. Whether it's a birthday, house party, or garden party, Shriji's is always my first choice. Thank you for making our special moments even more memorable." />
+
+                <TestimonialItem title="Falgun M. Shah" photo="images/testimonial3.png" date="January 22, 2024" detail="Simply the best restaurant in Bhavnagar. Whether it's a family get-together, social gathering, birthday party, or casual outing, it is always an excellent choice. The outdoor seating, beautiful garden atmosphere, and warm lighting make the dining experience truly memorable." />
+
+                <TestimonialItem title="Urvi K." photo="images/testimonial2.png" date="March 5, 2024" detail="Had been to Shriji's for the fifth time and every visit has been memorable. The food, service, ambience, and location are all perfect. A family-friendly place in the heart of the city with excellent hospitality. Seven-star rating to the entire team!" />
             </div>
         </div>
     </section>)

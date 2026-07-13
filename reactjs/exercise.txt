@@ -25,4 +25,12 @@ decision making
 1) modify 8_decision_making.js. also display current date and day in below format 
     Friday, 10-July-2026
     
+functional component 
 
+1) Create responsive website for one page gymnasium using bootstrap. use antigrivity ide. findout some good gym website and create design and content using it.
+
+convert into reusable function component 
+
+2) Create responsive website for one page tour operator using bootstrap. use antigrivity ide. findout some good tour operator website and create design and content using it.
+
+convert into reusable function component 
