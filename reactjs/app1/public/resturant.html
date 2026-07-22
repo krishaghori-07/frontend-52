@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Menu Design - Bootstrap 5 Cards</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12 col-md-6 col-lg-3">
+
+                <!-- Outer Main Card Container -->
+                <div class="card border-dark rounded-5 overflow-hidden">
+
+                    <!-- Card Header -->
+                    <div class="card-header bg-primary text-white text-center py-3 border-bottom border-dark border-2">
+                        <h5 class="m-0 fw-bold fs-5">
+                            <span class="badge bg-warning text-dark me-1">1</span> Karan Bhatt
+                        </h5>
+                    </div>
+
+                    <!-- Card Body / Content Area -->
+                    <div class="card-body bg-white p-3">
+
+                        <!-- Thali (Full-width card button) -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <button type="button"
+                                    class="btn btn-danger w-100">
+                                    Thali <span class="badge bg-dark text-white ms-2">3</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Nested Grid for Items -->
+                        <div class="row g-2">
+
+                            <!-- Left Column -->
+                            <div class="col-6">
+                                <!-- Roti -->
+                                <button type="button"
+                                    class="btn btn-info w-100 mb-3">
+                                    roti <span class="badge bg-secondary ms-1">0</span>
+                                </button>
+
+                                <!-- Butter Milk -->
+                                <button type="button"
+                                    class="btn btn-secondary w-100 ">
+                                    butter milk
+                                </button>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-6">
+                                <!-- Papad -->
+                                <button type="button"
+                                    class="btn btn-warning w-100 mb-3">
+                                    papad
+                                </button>
+
+                                <!-- Sweet -->
+                                <button type="button"
+                                    class="btn btn-success w-100">
+                                    sweet
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="card-footer bg-dark text-white text-center py-3 border-top border-dark border-2">
+                        <h5 class="m-0 fw-bold fs-5">
+                            Total : <span class="text-warning">1200</span>
+                        </h5>
+                    </div>
+
+                </div> <!-- /Card Container -->
+
+            </div> 
+        </div> <!-- /row -->
+    </div> <!-- /container -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
