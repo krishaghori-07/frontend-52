@@ -6,12 +6,20 @@ import ReactDOM from 'react-dom/client';
 class DinningTable extends React.Component {
     // static variable
     static count = 1;
+
+    static thaliPrice = 100;
+    static papadPrice = 10;
+    static rotiPrice = 12;
+    static chasPrice = 9;
+    static sweetPrice = 17;
+
     // initialization 
     constructor(props) {
         super(props);
         console.log("constructor called....")
         this.name = props.name;
         this.tableno = DinningTable.count;
+
         DinningTable.count = DinningTable.count + 1;
 
         //create state object
@@ -36,15 +44,34 @@ class DinningTable extends React.Component {
     shouldComponentUpdate(nextProp, nextState) {
         console.log('should Component update method is called');
         if (nextState.thali > 4)
-            return false// state update is cancelled
+        {
+            nextState.thali = 4;
+            return false;
+        }
         else
             return true; //state update is allowed
+
     }
     componentWillUpdate(nextProp, nextState) {
         console.log("componentWillUpdate method is called...");
     }
     componentDidUpdate(prevProp, prevState) {
         console.log("componentDidUpdate method is called...");
+        // if you use setState method inside componentDidUpdate function, then it must be used conditionally 
+        // only update total if count of any one item is changed
+        if (prevState.thali != this.state.thali ||
+            prevState.roti != this.state.roti ||
+            prevState.papad != this.state.papad ||
+            prevState.chas != this.state.chas ||
+            prevState.sweet != this.state.sweet
+        )
+            this.setState({
+                total: (this.state.thali * DinningTable.thaliPrice) +
+                    (this.state.roti * DinningTable.rotiPrice) +
+                    (this.state.papad * DinningTable.papadPrice) +
+                    (this.state.chas * DinningTable.chasPrice) +
+                    (this.state.sweet * DinningTable.sweetPrice)
+            });
     }
     // unmounting
     componentWillUnmount() {
@@ -53,7 +80,7 @@ class DinningTable extends React.Component {
     //arrow function
     updateThali = () => {
         this.setState({
-            thali: this.state.thali + 1
+            thali: this.state.thali + 1,
         });
     }
     updateRoti = () => {
