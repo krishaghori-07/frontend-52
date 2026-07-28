@@ -11,53 +11,53 @@ class MyMenu extends React.Component {
     }
 
     doLogin = () => {
-        // alert("You have logged in successfully");
+        alert("You have logged in successfully");
         this.setState({
             isLoggedIn: true
         });
     }
 
     doLogout = () => {
-        // alert("You have logged out successfully");
+        alert("You have logged out successfully");
         this.setState({
             isLoggedIn: false
         });
     }
     GuestMenu = () => {
-
-        return (
-            <>
-                <li className="nav-item">
-                    <a href="#" className="nav-link text-white">Register</a>
-                </li>
-                <li className="nav-item">
-                    <a href="#" className="nav-link text-white">Forgot password</a>
-                </li>
-                <li className="nav-item">
-                    <a onClick={this.doLogin} href="#" className="nav-link text-white">Login</a>
-                </li>
-            </>
-        )
-
+        if (this.state.isLoggedIn === false) {
+            return (
+                <>
+                    <li className="nav-item">
+                        <a href="#" className="nav-link text-white">Register</a>
+                    </li>
+                    <li className="nav-item">
+                        <a href="#" className="nav-link text-white">Forgot password</a>
+                    </li>
+                    <li className="nav-item">
+                        <a onClick={this.doLogin} href="#" className="nav-link text-white">Login</a>
+                    </li>
+                </>
+            )
+        }
     }
 
     UserMenu = () => {
-
-        return (<>
-            <li className="nav-item">
-                <a href="#" className="nav-link text-white">Cart</a>
-            </li>
-            <li className="nav-item">
-                <a href="#" className="nav-link text-white">Checkout</a>
-            </li>
-            <li className="nav-item">
-                <a href="#" className="nav-link text-white">Change password</a>
-            </li>
-            <li className="nav-item">
-                <a onClick={this.doLogout} href="#" className="nav-link text-white">Logout</a>
-            </li>
-        </>)
-
+        if (this.state.isLoggedIn === true) {
+            return (<>
+                <li className="nav-item">
+                    <a href="#" className="nav-link text-white">Cart</a>
+                </li>
+                <li className="nav-item">
+                    <a href="#" className="nav-link text-white">Checkout</a>
+                </li>
+                <li className="nav-item">
+                    <a href="#" className="nav-link text-white">Change password</a>
+                </li>
+                <li className="nav-item">
+                    <a onClick={this.doLogout} href="#" className="nav-link text-white">Logout</a>
+                </li>
+            </>)
+        }
     }
     render() {
         return (<nav className="navbar navbar-expand-lg" style={{ "background-color": "chocolate" }}>
@@ -77,7 +77,8 @@ class MyMenu extends React.Component {
                         <li className="nav-item">
                             <a href="#" className="nav-link text-white">Shop</a>
                         </li>
-                        {(this.state.isLoggedIn === true) ? this.doLogin : this.GuestMenu}
+                        {this.GuestMenu()}
+                        {this.UserMenu()}
 
                         <li className="nav-item">
                             <a href="#" className="nav-link text-white">Contact us</a>
