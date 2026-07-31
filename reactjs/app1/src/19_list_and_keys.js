@@ -227,9 +227,9 @@ function World() {
     ];
     return (<div className="container">
         <div className="row">
-            {countries.map((item) => {
+            {countries.map((item,index) => {
                 return <Country name={item.name} flag={item.flag} capital={item.capital}
-                    currency={item.currency} continent={item.continent} />
+                    currency={item.currency} continent={item.continent} key={index} />
             })}
         </div>
 
