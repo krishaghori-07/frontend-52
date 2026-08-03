@@ -26,7 +26,7 @@ decision making
     Friday, 10-July-2026
     
 functional component 
-
+-------------------------------
 1) Create responsive website for one page gymnasium using bootstrap. use antigrivity ide. findout some good gym website and create design and content using it.
 
 convert into reusable function component 
@@ -34,3 +34,32 @@ convert into reusable function component
 2) Create responsive website for one page tour operator using bootstrap. use antigrivity ide. findout some good tour operator website and create design and content using it.
 
 convert into reusable function component 
+
+1) create reactjs example using functional component which will display below detail of cricket player. 
+    1) Player Name 
+    2) Player Photo 
+    3) Player Matches 
+    4) Player Runs 
+    5) Player Balls 
+    6) Player 100s 
+    7) Player 50s 
+use bootstrap, container, row, column 
+display 11 players. using below design 
+https://www.instagram.com/p/DbUtgFBGROa/ 
+
+
+2) 
+create reactjs example using class component which will display below detail of cricket player. also provide delete button. 
+    1) Player Name 
+    2) Player Photo 
+    3) Player Matches 
+    4) Player Runs 
+    5) Player Balls 
+    6) Player 100s 
+    7) Player 50s 
+use bootstrap, container, row, column 
+display 11 players. using below design 
+https://www.instagram.com/p/DbUtgFBGROa/ 
+
+
+2) 
