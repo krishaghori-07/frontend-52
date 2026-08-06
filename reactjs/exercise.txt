@@ -62,4 +62,6 @@ display 11 players. using below design
 https://www.instagram.com/p/DbUtgFBGROa/ 
 
 
-2) 
+2) create BMI calculator using class component. 
+3) create EMI calculator using function component
+

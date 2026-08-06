@@ -1,78 +1,75 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './gst.css';
-//create function component 
-function GSTCalculator()
-{
-    var [amount,setAmount] = useState(0);
-    var [rate,setRate] = useState(0);
-    var [type,setType] = useState(0);
-    return (<div className="container py-5">
-        {/* Header */}
-        <div className="text-center mb-5 mt-4">
-            <h1 className="fw-bold mb-3">Free GST Calculator</h1>
-            <p className="text-muted fs-5">Calculate GST in minutes without any complex math.</p>
-        </div>
-        {/* Main Calculator Component */}
-        <div className="card calculator-card mx-auto bg-white" style={{ "max-width": "950px" }}>
-            <div className="row g-0">
-                {/* Left Side: Inputs */}
-                <div className="col-md-7 p-4 p-lg-5">
-                    {/* Amount Input */}
-                    <div className="mb-4 pb-2">
-                        <label className="form-label">Amount</label>
-                        <div className="input-group input-group-lg">
-                            <span className="input-group-text border-end-0 fs-5">₹</span>
-                            <input type="text" className="form-control border-start-0 ps-0" defaultValue="10,000" readOnly />
-                        </div>
-                    </div>
-                    {/* GST Percentage Dropdown */}
-                    <div className="mb-4 pb-2">
-                        <label htmlFor="gstRateSelect" className="form-label">GST %</label>
-                        <select className="form-select form-select-lg" id="gstRateSelect">
-                            <option value={0}>0%</option>
-                            <option value={3}>3%</option>
-                            <option value={5}>5%</option>
-                            <option value={12}>12%</option>
-                            <option value={18} selected>18%</option>
-                            <option value={28}>28%</option>
-                        </select>
-                    </div>
-                    {/* Tax Exclusive/Inclusive Dropdown */}
-                    <div className="mb-2">
-                        <label htmlFor="taxTypeSelect" className="form-label">Tax</label>
-                        <select className="form-select form-select-lg" id="taxTypeSelect">
-                            <option value="exclusive" selected>Exclusive</option>
-                            <option value="inclusive">Inclusive</option>
-                        </select>
-                    </div>
+class AreaCalculator extends React.Component {
+    constructor(props) {
+        super(props);
+        // create property variable
+        this.length = React.createRef();
+        this.width = React.createRef();
+        this.state = {
+            area: ''
+        }
+    }
+    // arrow function
+    calculateArea = (e) => {
+        let temp = this.length.current.value * this.width.current.value;
+        this.setState({
+            area: temp
+        });
+        e.preventDefault();
+    }
+    render() {
+        return (<div>
+            {/* Top navbar (pure Bootstrap classes) */}
+            <nav className="navbar navbar-dark bg-dark">
+                <div className="container">
+                    <span className="navbar-brand mb-0 h1">The EasyLearn Academy</span>
                 </div>
-                {/* Right Side: Results Display */}
-                <div className="col-md-5 p-4 p-lg-5 results-section d-flex flex-column justify-content-center text-center border-start">
-                    {/* Actual Amount */}
-                    <div className="w-100">
-                        <h2 className="result-value">10,000</h2>
-                        <p className="result-title">Actual Amount</p>
-                    </div>
-                    {/* Math Operator */}
-                    <div className="math-symbol">+</div>
-                    {/* GST Amount */}
-                    <div className="w-100">
-                        <h2 className="result-value">1,800</h2>
-                        <p className="result-title">GST Amount</p>
-                    </div>
-                    {/* Math Operator */}
-                    <div className="math-symbol">=</div>
-                    {/* Total Amount */}
-                    <div className="w-100 total-box mt-2">
-                        <h2 className="result-value">11,800</h2>
-                        <p className="result-title text-primary mb-0">Total Amount</p>
+            </nav>
+            <div className="container py-5">
+                <div className="text-center mb-5">
+                    <h1 className="display-6 fw-bold">Rectangle Area Calculator</h1>
+                    <p className="text-muted">Enter the length and width to see the formula used to work out the area.</p>
+                </div>
+                <div className="row justify-content-center">
+                    <div className="col-lg-6">
+                        <div className="card shadow-sm">
+                            <div className="card-body">
+                                <h5 className="card-title">Rectangle</h5>
+                                <p className="card-subtitle text-muted mb-3">Area = Length × Width</p>
+                                <form onSubmit={this.calculateArea}>
+                                    <div className="row g-3">
+                                        <div className="col-md-6">
+                                            <label htmlFor="rectLength" className="form-label">Length</label>
+                                            <input type="number" step="any" className="form-control" id="rectLength" placeholder="e.g. 10"
+                                                ref={this.length}
+                                            />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="rectWidth" className="form-label">Width</label>
+                                            <input type="number" step="any" className="form-control" id="rectWidth"
+                                                ref={this.width}
+                                                placeholder="e.g. 5" />
+                                        </div>
+                                    </div>
+                                    <button type="submit" className="btn btn-primary mt-4">Calculate Area</button>
+                                    <h1>{this.state.area}</h1>
+                                </form>
+                            </div>
+                        </div>
+                        {/* Note: this page is UI/markup only (Bootstrap 5 classes). No JavaScript
+       has been written, so the "Calculate Area" button does not compute a
+       result yet — that logic can be wired up separately if needed. */}
                     </div>
                 </div>
             </div>
+            <footer className="text-center text-muted py-4">
+                <small>The EasyLearn Academy — Bootstrap 5 UI Template</small>
+            </footer>
         </div>
-    </div>
-    );
+        );
+    }
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<GSTCalculator />)
+root.render(<AreaCalculator />)
