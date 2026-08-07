@@ -1,75 +1,45 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import './gst.css';
-class AreaCalculator extends React.Component {
-    constructor(props) {
-        super(props);
-        // create property variable
-        this.length = React.createRef();
-        this.width = React.createRef();
-        this.state = {
-            area: ''
-        }
-    }
-    // arrow function
-    calculateArea = (e) => {
-        let temp = this.length.current.value * this.width.current.value;
-        this.setState({
-            area: temp
-        });
-        e.preventDefault();
-    }
-    render() {
-        return (<div>
-            {/* Top navbar (pure Bootstrap classes) */}
-            <nav className="navbar navbar-dark bg-dark">
-                <div className="container">
-                    <span className="navbar-brand mb-0 h1">The EasyLearn Academy</span>
-                </div>
-            </nav>
-            <div className="container py-5">
-                <div className="text-center mb-5">
-                    <h1 className="display-6 fw-bold">Rectangle Area Calculator</h1>
-                    <p className="text-muted">Enter the length and width to see the formula used to work out the area.</p>
-                </div>
-                <div className="row justify-content-center">
-                    <div className="col-lg-6">
-                        <div className="card shadow-sm">
-                            <div className="card-body">
-                                <h5 className="card-title">Rectangle</h5>
-                                <p className="card-subtitle text-muted mb-3">Area = Length × Width</p>
-                                <form onSubmit={this.calculateArea}>
-                                    <div className="row g-3">
-                                        <div className="col-md-6">
-                                            <label htmlFor="rectLength" className="form-label">Length</label>
-                                            <input type="number" step="any" className="form-control" id="rectLength" placeholder="e.g. 10"
-                                                ref={this.length}
-                                            />
-                                        </div>
-                                        <div className="col-md-6">
-                                            <label htmlFor="rectWidth" className="form-label">Width</label>
-                                            <input type="number" step="any" className="form-control" id="rectWidth"
-                                                ref={this.width}
-                                                placeholder="e.g. 5" />
-                                        </div>
-                                    </div>
-                                    <button type="submit" className="btn btn-primary mt-4">Calculate Area</button>
-                                    <h1>{this.state.area}</h1>
-                                </form>
-                            </div>
-                        </div>
-                        {/* Note: this page is UI/markup only (Bootstrap 5 classes). No JavaScript
-       has been written, so the "Calculate Area" button does not compute a
-       result yet — that logic can be wired up separately if needed. */}
-                    </div>
-                </div>
-            </div>
-            <footer className="text-center text-muted py-4">
-                <small>The EasyLearn Academy — Bootstrap 5 UI Template</small>
-            </footer>
-        </div>
-        );
-    }
+import './player.css';
+import Batter from './batter';
+function ICCRanking() {
+    return (<div className="wrap">
+        <h1>ICC Men's ODI Batting Rankings</h1>
+        <p className="sub">As of 31 July 2026</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                <Batter rank={1} name='Mr Gill' country='Bharat' ranking='1000' />
+                <Batter rank={2} name="Daryl Mitchell" country="New Zealand" ranking={794} />
+                <Batter rank={3} name="Virat Kohli" country="India" ranking={767} />
+                <Batter rank={4} name="Rohit Sharma" country="India" ranking={758} />
+                <Batter rank={5} name="Ibrahim Zadran" country="Afghanistan" ranking={712} />
+                <Batter rank={6} name="Babar Azam" country="Pakistan" ranking={689} />
+                <Batter rank={7} name="Harry Tector" country="Ireland" ranking={679} />
+                <Batter rank={8} name="Joe Root" country="England" ranking={674} />
+                <Batter rank={9} name="Shai Hope" country="West Indies" ranking={673} />
+                <Batter rank={10} name="Charith Asalanka" country="Sri Lanka" ranking={659} />
+                <Batter rank={11} name="Kusal Mendis" country="Sri Lanka" ranking={648} />
+                <Batter rank={12} name="Quinton de Kock" country="South Africa" ranking={640} />
+                <Batter rank={13} name="Shreyas Iyer" country="India" ranking={633} />
+                <Batter rank={14} name="Pathum Nissanka" country="Sri Lanka" ranking={632} />
+                <Batter rank={14} name="Rahmanullah Gurbaz" country="Afghanistan" ranking={632} />
+                <Batter rank={16} name="Salman Agha" country="Pakistan" ranking={630} />
+                <Batter rank={17} name="Harry Brook" country="England" ranking={629} />
+                <Batter rank={18} name="Lokesh Rahul" country="India" ranking={625} />
+                <Batter rank={19} name="Ben Duckett" country="England" ranking={615} />
+                <Batter rank={20} name="Travis Head" country="Australia" ranking={610} />
+            </tbody>
+        </table>
+    </div>
+    );
 }
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<AreaCalculator />)
+root.render(<ICCRanking />)
