@@ -65,3 +65,7 @@ https://www.instagram.com/p/DbUtgFBGROa/
 2) create BMI calculator using class component. 
 3) create EMI calculator using function component
 
+styled component
+---------------------------
+1) create an example of styled component display 30 stocks name of BSE using attractive styles. 
+2) create an example of styled component display 10 Menu items of Restaurant in attractive style.
