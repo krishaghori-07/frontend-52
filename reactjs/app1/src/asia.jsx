@@ -1,0 +1,54 @@
+export default function Asia() {
+    return (<ol>
+        <li><h1>Asia</h1></li>
+        <li>Afghanistan</li>
+        <li>Armenia</li>
+        <li>Azerbaijan</li>
+        <li>Bahrain</li>
+        <li>Bangladesh</li>
+        <li>Bhutan</li>
+        <li>Brunei</li>
+        <li>Cambodia</li>
+        <li>China</li>
+        <li>Cyprus</li>
+        <li>Georgia</li>
+        <li>India</li>
+        <li>Indonesia</li>
+        <li>Iran</li>
+        <li>Iraq</li>
+        <li>Israel</li>
+        <li>Japan</li>
+        <li>Jordan</li>
+        <li>Kazakhstan</li>
+        <li>Kuwait</li>
+        <li>Kyrgyzstan</li>
+        <li>Laos</li>
+        <li>Lebanon</li>
+        <li>Malaysia</li>
+        <li>Maldives</li>
+        <li>Mongolia</li>
+        <li>Myanmar</li>
+        <li>Nepal</li>
+        <li>North Korea</li>
+        <li>Oman</li>
+        <li>Pakistan</li>
+        <li>Palestine</li>
+        <li>Philippines</li>
+        <li>Qatar</li>
+        <li>Saudi Arabia</li>
+        <li>Singapore</li>
+        <li>South Korea</li>
+        <li>Sri Lanka</li>
+        <li>Syria</li>
+        <li>Taiwan</li>
+        <li>Tajikistan</li>
+        <li>Thailand</li>
+        <li>Timor-Leste</li>
+        <li>Turkey</li>
+        <li>Turkmenistan</li>
+        <li>United Arab Emirates</li>
+        <li>Uzbekistan</li>
+        <li>Vietnam</li>
+        <li>Yemen</li>
+    </ol>)
+}
