@@ -1,32 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import styled from 'styled-components';
 import {BrowserRouter,Routes,Route} from 'react-router-dom';
-import NorthAmerica from './north_america';
-import Asia from './asia';
-import Europe from './europe';
-function PageNotFound()
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+function UseEffectExample()
 {
-    return (<div>
-        <h1 align='center'>Page not found</h1>
-        <hr/>
-    </div>)
-}
-//define function for routing
-function MyRouter()
-{
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route index path='/' element={<Asia/>} />
-                <Route path="/europe" element={<Europe />} />
-                <Route path="/asia" element={<Asia />} />
-                <Route path="/north_america" element={<NorthAmerica />} />
-                {/* define route for 404 error (page not found) */}
-                <Route path="*" element={<PageNotFound />} />
-            </Routes>
-        </BrowserRouter>
-    );
+    //create state variable 
+    var [count,setCount] = useState(0);
+    useEffect(() => {
+        // useEffect hook will run before return statement run 1st time as well as for each time state variable change
+        console.log("useEffect hook executed... ",Math.random());
+        document.title = `count = ${count}`;
+    });
+    return (<div className='container'>
+        <div className="row">
+            <div className="col-12"><h1>useEffect example</h1>
+                <button type='button' className='btn btn-primary' onClick={() => setCount(count + 1)}>Click me to change count</button>
+            </div>
+        </div>
+    </div>);
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<MyRouter />)
+root.render(<UseEffectExample />)
