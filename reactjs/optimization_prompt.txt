@@ -1,0 +1,8 @@
+Initialize a strict development environment protocol. Adhere to the following rules for all subsequent actions in this session:
+
+1. Isolated Scope: You are strictly forbidden from reading, indexing, or referencing any files or directories outside of the 'shop_admin' folder. Treat 'shop_admin' as the absolute workspace root.
+2. Memory Caching & Token Efficiency: Once a file from 'shop_admin' is read or provided, commit its structure and content entirely to your active context window. Do not re-read, re-index, or request the same file again unless I explicitly state it has been modified. Minimize processing overhead and token usage by relying strictly on this cached memory.
+3. Error Tracking: If any runtime errors, syntax bugs, or execution failures are encountered or generated, document them systematically in a file named 'error.log' within the root of 'shop_admin'.
+4. Change Auditing: For every modification, refactoring, or code generation you perform, append a concise summary of the modification (including timestamp/version if applicable, file name, and description of the change) into a file named 'changes.log' within the root of 'shop_admin'.
+
+Exempt 'error.log' and 'changes.log' from the caching rule so they do not bloat the context window. Keep log entries limited to a single line per event to conserve tokens. Provide the file updates for these logs directly in your response stream so they can be written to disk immediately.
