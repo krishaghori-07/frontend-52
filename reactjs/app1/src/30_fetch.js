@@ -2,31 +2,20 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import axios from 'axios';
 function App() {
     var [posts, setPosts] = useState([]);
     var [isFetched, setIsFetch] = useState(false);
 
     useEffect(() => {
+        //call api 
         if (isFetched === false) {
             var apiAddress = "https://jsonplaceholder.typicode.com/posts";
-            //axios
-            var options = {
-                url:apiAddress,
-                method:'get',
-                responseType:'json'
-            };
-            
-            //call api 
-            axios(options).then((response) =>{
-                //promise(function) that will execute conditionally (only if server returns data)
-                // response object has all the data in data property returns from server
-                setPosts(response.data);
-
-            }).catch((error) => {
-                 //promise(function) that will execute conditionally (only if server is error )
-                 alert("error in calling api");
-            })
+            fetch(apiAddress).then((response) => response.json()).then((data) => {
+                //store state array
+                setPosts(data);
+                //update isFetch variable to true
+                setIsFetch(true);
+            });
         }
 
     });
