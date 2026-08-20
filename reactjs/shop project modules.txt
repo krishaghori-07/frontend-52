@@ -12,7 +12,7 @@ Types of users
                 
                 table 
                 id,title,photo,islive,isdeleted
-            
+                
             Product management  (class)
                 Add, edit, delete, view, search products
                 table 
