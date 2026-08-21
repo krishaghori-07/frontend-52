@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Product Management</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  <link rel="preload" href="./css/adminlte.css" as="style" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
+    integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous" media="print"
+    onload="this.media = 'all'" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    crossorigin="anonymous" />
+
+  <link rel="stylesheet" href="css/adminlte.css" />
+</head>
+
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+  <div class="app-wrapper">
+
+    <!-- Header -->
+    <nav class="app-header navbar navbar-expand bg-body">
+      <div class="container-fluid">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button" aria-label="Toggle sidebar">
+              <i class="bi bi-list"></i>
+            </a>
+          </li>
+
+          <li>
+            <h4>Admin panel for online shop</h4>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+      <div class="sidebar-brand"></div>
+
+      <div class="sidebar-wrapper">
+        <ul class="nav flex-column">
+          <li class="nav-item border-bottom">
+            <a href="dashboard.html" class="nav-link fs-5">Dashboard</a>
+          </li>
+          <li class="nav-item border-bottom">
+            <a href="category.html" class="nav-link fs-5">Categories</a>
+          </li>
+          <li class="nav-item border-bottom">
+            <a href="users.html" class="nav-link fs-5">Users</a>
+          </li>
+          <li class="nav-item border-bottom">
+            <a href="orders.html" class="nav-link fs-5">Orders</a>
+          </li>
+          <li class="nav-item border-bottom">
+            <a href="product.html" class="nav-link fs-5 active bg-primary text-white">Products</a>
+          </li>
+          <li class="nav-item border-bottom">
+            <a href="change-password.html" class="nav-link fs-5">Change Password</a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <div class="app-content-header">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-6">
+              <h1 class="mb-0 fs-3">Product Management</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header text-bg-primary">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0 fs-5">Existing Products</h3>
+                    <div><a href="insert-product.html" class="btn btn-light btn-sm fw-semibold">Add new product</a></div>
+                  </div>
+                </div>
+
+                <div class="card-body">
+                  <!-- TABLE -->
+                  <div class="table-responsive">
+                    <table class="table align-middle mb-0 table-hover">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Category</th>
+                          <th>Name</th>
+                          <th>Photo</th>
+                          <th>Price</th>
+                          <th>Quantity</th>
+                          <th class="text-end">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="productTableBody">
+                        <tr id="row-201">
+                          <td>201</td>
+                          <td>Electronics</td>
+                          <td>Wireless Bluetooth Headphones</td>
+                          <td>
+                            <img src="http://www.picsum.photos/100" class="img-fluid img-thumbnail" style="max-height: 50px;" alt="Headphones">
+                          </td>
+                          <td>$99.00</td>
+                          <td>45</td>
+                          <td class="text-end">
+                            <div class="btn-group btn-group-sm">
+                              <button class="btn btn-outline-secondary" type="button" title="View Detail" data-bs-toggle="modal" data-bs-target="#productDetailModal" onclick="showProductDetail('201')">
+                                <i class="bi bi-eye" aria-hidden="true"></i>
+                              </button>
+                              <a href="edit-product.html?id=201" class="btn btn-outline-secondary" title="Edit">
+                                <i class="bi bi-pencil" aria-hidden="true"></i>
+                              </a>
+                              <button class="btn btn-outline-secondary" type="button" title="Delete" onclick="deleteProduct('201')">
+                                <i class="bi bi-trash" aria-hidden="true"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr id="row-202">
+                          <td>202</td>
+                          <td>Apparel</td>
+                          <td>Leather Trifold Wallet</td>
+                          <td>
+                            <img src="http://www.picsum.photos/101" class="img-fluid img-thumbnail" style="max-height: 50px;" alt="Wallet">
+                          </td>
+                          <td>$89.99</td>
+                          <td>12</td>
+                          <td class="text-end">
+                            <div class="btn-group btn-group-sm">
+                              <button class="btn btn-outline-secondary" type="button" title="View Detail" data-bs-toggle="modal" data-bs-target="#productDetailModal" onclick="showProductDetail('202')">
+                                <i class="bi bi-eye" aria-hidden="true"></i>
+                              </button>
+                              <a href="edit-product.html?id=202" class="btn btn-outline-secondary" title="Edit">
+                                <i class="bi bi-pencil" aria-hidden="true"></i>
+                              </a>
+                              <button class="btn btn-outline-secondary" type="button" title="Delete" onclick="deleteProduct('202')">
+                                <i class="bi bi-trash" aria-hidden="true"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr id="row-203">
+                          <td>203</td>
+                          <td>Office Supplies</td>
+                          <td>Mechanical Gaming Keyboard</td>
+                          <td>
+                            <img src="http://www.picsum.photos/102" class="img-fluid img-thumbnail" style="max-height: 50px;" alt="Keyboard">
+                          </td>
+                          <td>$120.00</td>
+                          <td>28</td>
+                          <td class="text-end">
+                            <div class="btn-group btn-group-sm">
+                              <button class="btn btn-outline-secondary" type="button" title="View Detail" data-bs-toggle="modal" data-bs-target="#productDetailModal" onclick="showProductDetail('203')">
+                                <i class="bi bi-eye" aria-hidden="true"></i>
+                              </button>
+                              <a href="edit-product.html?id=203" class="btn btn-outline-secondary" title="Edit">
+                                <i class="bi bi-pencil" aria-hidden="true"></i>
+                              </a>
+                              <button class="btn btn-outline-secondary" type="button" title="Delete" onclick="deleteProduct('203')">
+                                <i class="bi bi-trash" aria-hidden="true"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- TABLE -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Product Detail Modal -->
+  <div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="productDetailModalLabel">Product Detail - <span id="modalProductTitle"></span></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="modalProductPhoto" src="" class="img-fluid img-thumbnail shadow mb-3" style="max-height: 200px;" alt="Product Photo">
+          <table class="table table-bordered text-start align-middle">
+            <tbody>
+              <tr>
+                <th>Product ID</th>
+                <td id="modalProductId"></td>
+              </tr>
+              <tr>
+                <th>Category</th>
+                <td id="modalProductCategory"></td>
+              </tr>
+              <tr>
+                <th>Product Name</th>
+                <td id="modalProductName"></td>
+              </tr>
+              <tr>
+                <th>Price</th>
+                <td id="modalProductPrice"></td>
+              </tr>
+              <tr>
+                <th>Quantity</th>
+                <td id="modalProductQty"></td>
+              </tr>
+              <tr>
+                <th>Weight</th>
+                <td id="modalProductWeight"></td>
+              </tr>
+              <tr>
+                <th>Size</th>
+                <td id="modalProductSize"></td>
+              </tr>
+              <tr>
+                <th>Description</th>
+                <td id="modalProductDetail"></td>
+              </tr>
+              <tr>
+                <th>Is Live</th>
+                <td><span id="modalProductIsLive" class="badge"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <script src="./js/adminlte.js"></script>
+
+  <script>
+    const productDatabase = {
+      "201": {
+        id: "201",
+        category: "Electronics",
+        name: "Wireless Bluetooth Headphones",
+        photo: "http://www.picsum.photos/100",
+        price: "$99.00",
+        qty: "45",
+        weight: "0.25 kg",
+        size: "Medium",
+        detail: "High-quality wireless over-ear headphones with active noise cancellation and 40h battery life.",
+        islive: "Yes"
+      },
+      "202": {
+        id: "202",
+        category: "Apparel",
+        name: "Leather Trifold Wallet",
+        photo: "http://www.picsum.photos/101",
+        price: "$89.99",
+        qty: "12",
+        weight: "0.10 kg",
+        size: "Small",
+        detail: "Genuine cowhide leather trifold wallet featuring multiple card slots and RFID protection.",
+        islive: "Yes"
+      },
+      "203": {
+        id: "203",
+        category: "Office Supplies",
+        name: "Mechanical Gaming Keyboard",
+        photo: "http://www.picsum.photos/102",
+        price: "$120.00",
+        qty: "28",
+        weight: "1.10 kg",
+        size: "Full Size",
+        detail: "RGB mechanical keyboard with blue tactile switches, anti-ghosting keys, and aluminum top frame.",
+        islive: "No"
+      }
+    };
+
+    function showProductDetail(productId) {
+      const product = productDatabase[productId];
+      if (!product) return;
+
+      document.getElementById("modalProductTitle").innerText = product.name;
+      document.getElementById("modalProductPhoto").src = product.photo;
+      document.getElementById("modalProductId").innerText = product.id;
+      document.getElementById("modalProductCategory").innerText = product.category;
+      document.getElementById("modalProductName").innerText = product.name;
+      document.getElementById("modalProductPrice").innerText = product.price;
+      document.getElementById("modalProductQty").innerText = product.qty;
+      document.getElementById("modalProductWeight").innerText = product.weight;
+      document.getElementById("modalProductSize").innerText = product.size;
+      document.getElementById("modalProductDetail").innerText = product.detail;
+
+      const liveBadge = document.getElementById("modalProductIsLive");
+      liveBadge.innerText = product.islive;
+      if (product.islive === "Yes") {
+        liveBadge.className = "badge text-bg-success";
+      } else {
+        liveBadge.className = "badge text-bg-danger";
+      }
+    }
+
+    function deleteProduct(productId) {
+      if (confirm(`Are you sure you want to delete product ID ${productId}?`)) {
+        const row = document.getElementById(`row-${productId}`);
+        if (row) {
+          row.remove();
+          alert("Product deleted successfully!");
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+Create below files 
+    users.html, use category.html file for design purpose, user can not edit or delete rows 
+        fields are 
+            id,email, created_at 
+
+    orders.html, use category.html file for design purpose. user can not edit, delete order, but user can view order detail 
+        fields area 
+            id, order date, customer name, status, payment status, total amount 
+
+do not unnecessary read other files 
+-----------------------------------------------------------------------------------
+
+edit orders.html, remove modal dialogbox when user click on view button. it should be link which route to order-detail.html. this page should be designed using theme/pages/invoice.html file for design purpose
+------------------------------------------------------------
+
+create product.html for design use category.html.  fields to display 
+    id, category, name, photo, price, quantity, 
+    and provide button to display edit, delete, view detail 
+
+create page insert-product.html this page should be design using insert-category.html but use below fields 
+    category (select)
+    name, price, quantity, 
+    weight, size, photo, detail, is live (radio button) 
+    use form grid to display it in compact manner. 
+
+create page edit-product.html same as insert-product.html but with edit functionality 
+    category (select)
+    name, price, quantity, 
+    weight, size, photo, detail, is live (radio button) 
+    use form grid to display it in compact manner. 
+---------------------------------------------------------------------
+create change-password.html page, for design insert-category.html 
+    inputs are 
+    old password, new password and confirm new password 
+
+---------------------------------------------------------------------
+
+create dashboard.html, for design  public/theme/index.html
+    display category, products, users, orders on 1st line 
+    display today order, monthly order, quaterly order, yearly order on 2nd line 
