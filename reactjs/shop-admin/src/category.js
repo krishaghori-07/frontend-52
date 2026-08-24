@@ -1,6 +1,7 @@
 // create class 
 import { Component } from "react";
 import Menu from "./menu";
+import { Link } from "react-router-dom";
 export default class Category extends Component {
     render() {
         return (
@@ -25,7 +26,8 @@ export default class Category extends Component {
                                             <div className="card-header text-bg-primary">
                                                 <div className="d-flex justify-content-between">
                                                     <h3 className>Existing Categories</h3>
-                                                    <div><a href="insert-category.html" className="btn btn-light">Add new cateogry</a></div>
+                                                    <div>
+                                                        <Link to="/insert-category" className="btn btn-light">Add new cateogry</Link></div>
                                                 </div>
                                             </div>
                                             <div className="card-body">
@@ -56,9 +58,9 @@ export default class Category extends Component {
                                                                         <button className="btn btn-outline-secondary" type="button" title="Delete">
                                                                             <i className="bi bi-trash" aria-hidden="true" />
                                                                         </button>
-                                                                        <button className="btn btn-outline-secondary" type="button" title="Edit">
+                                                                        <Link to="/update-category" className="btn btn-outline-secondary" title="Edit">
                                                                             <i className="bi bi-pencil" aria-hidden="true" />
-                                                                        </button>
+                                                                        </Link>
                                                                     </div>
                                                                 </td>
                                                             </tr>

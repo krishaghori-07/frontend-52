@@ -1,5 +1,6 @@
 import { Component } from "react";
 import Menu from "./menu";
+import { Link } from "react-router-dom";
 
 export default class Product extends Component {
     constructor(props) {
@@ -86,7 +87,7 @@ export default class Product extends Component {
                                             <div className="card-header text-bg-primary">
                                                 <div className="d-flex justify-content-between align-items-center">
                                                     <h3 className="mb-0 fs-5">Existing Products</h3>
-                                                    <div><a href="insert-product.html" className="btn btn-light btn-sm fw-semibold">Add new product</a></div>
+                                                    <div><Link to="/insert-product" className="btn btn-light btn-sm fw-semibold">Add new product</Link></div>
                                                 </div>
                                             </div>
 
@@ -121,9 +122,9 @@ export default class Product extends Component {
                                                                             <button className="btn btn-outline-secondary" type="button" title="View Detail" data-bs-toggle="modal" data-bs-target="#productDetailModal" onClick={() => this.showProductDetail(prod)}>
                                                                                 <i className="bi bi-eye" aria-hidden="true" />
                                                                             </button>
-                                                                            <a href={`edit-product.html?id=${prod.id}`} className="btn btn-outline-secondary" title="Edit">
+                                                                            <Link to="/edit-product" className="btn btn-outline-secondary" title="Edit">
                                                                                 <i className="bi bi-pencil" aria-hidden="true" />
-                                                                            </a>
+                                                                            </Link>
                                                                             <button className="btn btn-outline-secondary" type="button" title="Delete" onClick={() => this.deleteProduct(prod.id)}>
                                                                                 <i className="bi bi-trash" aria-hidden="true" />
                                                                             </button>

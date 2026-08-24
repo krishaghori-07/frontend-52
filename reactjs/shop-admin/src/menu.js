@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { Link } from "react-router-dom";
 class Menu extends Component {
     render() {
         return (<>
@@ -6,7 +7,7 @@ class Menu extends Component {
                 <div className="container-fluid">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" data-lte-toggle="sidebar" href="#" role="button" aria-label="Toggle sidebar">
+                            <a className="nav-link" data-lte-toggle="sidebar" to="#" role="button" aria-label="Toggle sidebar">
                                 <i className="bi bi-list" />
                             </a>
                         </li>
@@ -21,25 +22,25 @@ class Menu extends Component {
                 <div className="sidebar-wrapper">
                     <ul className="nav flex-column">
                         <li className="nav-item border-bottom">
-                            <a href="dashboard.html" className="nav-link fs-5">Dashboard</a>
+                            <Link to="/dashboard" className="nav-link fs-5">Dashboard</Link>
                         </li>
                         <li className="nav-item border-bottom">
-                            <a href="category.html" className="nav-link fs-5 active bg-primary text-white">Categories</a>
+                            <Link to="/category" className="nav-link fs-5 active bg-primary text-white">Categories</Link>
                         </li>
                         <li className="nav-item border-bottom">
-                            <a href="users.html" className="nav-link fs-5">Users</a>
+                            <Link to="/user" className="nav-link fs-5">Users</Link>
                         </li>
                         <li className="nav-item border-bottom">
-                            <a href="orders.html" className="nav-link fs-5">Orders</a>
+                            <Link to="/order" className="nav-link fs-5">Orders</Link>
                         </li>
                         <li className="nav-item border-bottom">
-                            <a href="product.html" className="nav-link fs-5">Products</a>
+                            <Link to="/product" className="nav-link fs-5">Products</Link>
                         </li>
                         <li className="nav-item border-bottom">
-                            <a href="change-password.html" className="nav-link fs-5">Change Password</a>
+                            <Link to="/change-password" className="nav-link fs-5">Change Password</Link>
                         </li>
-                        <li className="nav-item border-bottom">>
-                            <a href="" className="nav-link fs-5">Logout</a>
+                        <li className="nav-item border-bottom">
+                            <Link to="/logout" className="nav-link fs-5">Logout</Link>
                         </li>
                     </ul>
                 </div>

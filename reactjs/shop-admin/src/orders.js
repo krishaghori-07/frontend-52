@@ -1,6 +1,6 @@
 import { Component } from "react";
 import Menu from "./menu";
-
+import { Link } from "react-router-dom";
 export default class Orders extends Component {
     render() {
         return (
@@ -57,9 +57,9 @@ export default class Orders extends Component {
                                                                 </td>
                                                                 <td>$158.50</td>
                                                                 <td className="text-end">
-                                                                    <a href="order-detail.html?id=10001" className="btn btn-sm btn-outline-primary">
+                                                                    <Link to={"/order-detail"} className="btn btn-sm btn-outline-primary">
                                                                         <i className="bi bi-eye me-1" /> View
-                                                                    </a>
+                                                                    </Link>
                                                                 </td>
                                                             </tr>
                                                             <tr>
