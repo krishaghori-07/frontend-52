@@ -1,50 +1,49 @@
 import { Component } from "react";
 import Menu from "./menu";
 import { Link } from "react-router-dom";
-
+import axios from 'axios';
 export default class Product extends Component {
+
+    componentDidMount() {
+        //this method executes after render method execute 1st time 
+        //api call (fetch data from server)
+        let apiAddress = "https://theeasylearnacademy.com/shop/ws/product.php";
+        let option = {
+            url: apiAddress,
+            method: 'get',
+            responseType: 'json'
+        };
+        axios(option).then((response) => {
+            console.log(response);
+            console.log(response.data);
+            let error = response.data[0]['error'];
+            if (error !== 'no') {
+                //there is error 
+                alert(error);
+            }
+            else {
+                //there is no error 
+                //then get total 
+                let total = response.data[1]['total'];
+                if (total === 0) {
+                    alert("No product found");
+                }
+                else {
+                    //there are products 
+                    response.data.splice(0, 2); //delete 2 object from beginning 
+                    this.setState({
+                        products: response.data
+                    });
+                }
+            }
+        }).catch((error) => {
+
+        });
+    }
     constructor(props) {
         super(props);
         this.state = {
-            products: [
-                {
-                    id: "201",
-                    category: "Electronics",
-                    name: "Wireless Bluetooth Headphones",
-                    photo: "http://www.picsum.photos/100",
-                    price: "$99.00",
-                    qty: "45",
-                    weight: "0.25 kg",
-                    size: "Medium",
-                    detail: "High-quality wireless over-ear headphones with active noise cancellation and 40h battery life.",
-                    islive: "Yes"
-                },
-                {
-                    id: "202",
-                    category: "Apparel",
-                    name: "Leather Trifold Wallet",
-                    photo: "http://www.picsum.photos/101",
-                    price: "$89.99",
-                    qty: "12",
-                    weight: "0.10 kg",
-                    size: "Small",
-                    detail: "Genuine cowhide leather trifold wallet featuring multiple card slots and RFID protection.",
-                    islive: "Yes"
-                },
-                {
-                    id: "203",
-                    category: "Office Supplies",
-                    name: "Mechanical Gaming Keyboard",
-                    photo: "http://www.picsum.photos/102",
-                    price: "$120.00",
-                    qty: "28",
-                    weight: "1.10 kg",
-                    size: "Full Size",
-                    detail: "RGB mechanical keyboard with blue tactile switches, anti-ghosting keys, and aluminum top frame.",
-                    islive: "No"
-                }
-            ],
-            selectedProduct: null
+            products: [],
         };
     }
 
@@ -52,14 +51,7 @@ export default class Product extends Component {
         this.setState({ selectedProduct: product });
     };
 
-    deleteProduct = (productId) => {
-        if (window.confirm(`Are you sure you want to delete product ID ${productId}?`)) {
-            this.setState({
-                products: this.state.products.filter(p => p.id !== productId)
-            });
-            alert("Product deleted successfully!");
-        }
-    };
+
 
     render() {
         const { products, selectedProduct } = this.state;
@@ -107,31 +99,19 @@ export default class Product extends Component {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {products.map((prod) => (
-                                                                <tr key={prod.id} id={`row-${prod.id}`}>
-                                                                    <td>{prod.id}</td>
-                                                                    <td>{prod.category}</td>
-                                                                    <td>{prod.name}</td>
-                                                                    <td>
-                                                                        <img src={prod.photo} className="img-fluid img-thumbnail" style={{ maxHeight: "50px" }} alt={prod.name} />
+                                                            {this.state.products.map((item) => {
+                                                                return (<tr>
+                                                                    <td>{item.id}</td>
+                                                                    <td>{item.categorytitle}</td>
+                                                                    <td>{item.title}</td>
+                                                                    <td width='200px'>
+    <img src={"http://www.theeasylearnacademy.com/shop/images/product/" + item.photo}   alt="" className="img-fluid" />
                                                                     </td>
-                                                                    <td>{prod.price}</td>
-                                                                    <td>{prod.qty}</td>
-                                                                    <td className="text-end">
-                                                                        <div className="btn-group btn-group-sm">
-                                                                            <button className="btn btn-outline-secondary" type="button" title="View Detail" data-bs-toggle="modal" data-bs-target="#productDetailModal" onClick={() => this.showProductDetail(prod)}>
-                                                                                <i className="bi bi-eye" aria-hidden="true" />
-                                                                            </button>
-                                                                            <Link to="/edit-product" className="btn btn-outline-secondary" title="Edit">
-                                                                                <i className="bi bi-pencil" aria-hidden="true" />
-                                                                            </Link>
-                                                                            <button className="btn btn-outline-secondary" type="button" title="Delete" onClick={() => this.deleteProduct(prod.id)}>
-                                                                                <i className="bi bi-trash" aria-hidden="true" />
-                                                                            </button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
+                                                                    <td>{item.price}</td>
+                                                                    <td>{item.stock}</td>
+                                                                    <td></td>
+                                                                </tr>)
+                                                            })}
                                                         </tbody>
                                                     </table>
                                                 </div>
