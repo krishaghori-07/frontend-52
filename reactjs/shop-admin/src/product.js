@@ -2,12 +2,15 @@ import { Component } from "react";
 import Menu from "./menu";
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { showError, showMessage } from "./messages";
+import { getBase, getImageBase } from "./common";
 export default class Product extends Component {
 
     componentDidMount() {
         //this method executes after render method execute 1st time 
         //api call (fetch data from server)
-        let apiAddress = "https://theeasylearnacademy.com/shop/ws/product.php";
+        let apiAddress = getBase() + "product.php";
         let option = {
             url: apiAddress,
             method: 'get',
@@ -19,25 +22,26 @@ export default class Product extends Component {
             let error = response.data[0]['error'];
             if (error !== 'no') {
                 //there is error 
-                alert(error);
+                showError(error);
             }
             else {
                 //there is no error 
                 //then get total 
                 let total = response.data[1]['total'];
                 if (total === 0) {
-                    alert("No product found");
+                    showError("no product found");
                 }
                 else {
                     //there are products 
                     response.data.splice(0, 2); //delete 2 object from beginning 
+                    showMessage("products fetched successfully")
                     this.setState({
                         products: response.data
                     });
                 }
             }
         }).catch((error) => {
-
+            showError();
         });
     }
     constructor(props) {
@@ -51,13 +55,22 @@ export default class Product extends Component {
         this.setState({ selectedProduct: product });
     };
 
+    deleteProduct = (productID) => {
+        let apiAddress = getBase() + "delete_product.php?id" + productID;
+        let option = {
+            url: apiAddress,
+            method: 'get',
+            responseType: 'json'
+        };
 
+    }
 
     render() {
         const { products, selectedProduct } = this.state;
 
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
+                <ToastContainer />
                 <div className="app-wrapper">
                     <Menu />
                     <main className="app-main">
@@ -105,11 +118,15 @@ export default class Product extends Component {
                                                                     <td>{item.categorytitle}</td>
                                                                     <td>{item.title}</td>
                                                                     <td width='200px'>
-    <img src={"http://www.theeasylearnacademy.com/shop/images/product/" + item.photo}   alt="" className="img-fluid" />
+                                                                        <img src={getImageBase() + "product/" + item.photo} alt="" className="img-fluid" />
                                                                     </td>
                                                                     <td>{item.price}</td>
                                                                     <td>{item.stock}</td>
-                                                                    <td></td>
+                                                                    <td>
+                                                                        <button onClick={() => this.deleteProduct(item.id)} type='button' className='btn btn-danger w-100'>Delete</button> <br />
+                                                                        <Link className='btn btn-warning w-100'>Edit</Link> <br />
+                                                                        <Link className='btn btn-secondary w-100'>View Detail</Link>
+                                                                    </td>
                                                                 </tr>)
                                                             })}
                                                         </tbody>
