@@ -50,23 +50,63 @@ export default class Product extends Component {
             products: [],
         };
     }
-
-    showProductDetail = (product) => {
-        this.setState({ selectedProduct: product });
-    };
-
     deleteProduct = (productID) => {
-        let apiAddress = getBase() + "delete_product.php?id" + productID;
+        let apiAddress = getBase() + "delete_product.php?id=" + productID;
+        console.log(apiAddress);
         let option = {
             url: apiAddress,
             method: 'get',
             responseType: 'json'
         };
+        //delete product on server by calling api 
+        axios(option).then((response) => {
+            let error = response.data[0]['error'];
+            if (error !== 'no') {
+                //there is error
+                showError(error);
+            }
+            else {
+                //there is no error, product deleted successfully
+                let message = response.data[1]['message'];
+                showMessage(message);
+                //also delete product from state array 
+                let remainingProducts = this.state.products.filter((item) => {
+                    if (item.id !== productID) {
+                        return item;
+                    }
+                });
+                this.setState({
+                    products: remainingProducts
+                });
+            }
+        }).catch((error) => {
+            showError();
+        })
 
     }
-
+    displayProducts = () => {
+        return this.state.products.map((item) => {
+            return (<tr key={item.id}>
+                <td>{item.id}</td>
+                <td>{item.categorytitle}</td>
+                <td>{item.title}</td>
+                <td width='200px'>
+                    <img src={getImageBase() + "product/" + item.photo} alt="" className="img-fluid" />
+                </td>
+                <td>{item.price}</td>
+                <td>{item.stock}</td>
+                <td>
+                    <button onClick={() => this.deleteProduct(item.id)} type='button' className='btn btn-danger w-100'>Delete</button> <br />
+                    <Link className='btn btn-warning w-100'>Edit</Link> <br />
+                    <Link className='btn btn-secondary w-100'>View Detail</Link>
+                </td>
+            </tr>)
+        })
+    }
+    noProductFound = () => {
+        return <tr><td colSpan='7' align="center">No product found</td></tr>
+    }
     render() {
-        const { products, selectedProduct } = this.state;
 
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -112,23 +152,9 @@ export default class Product extends Component {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {this.state.products.map((item) => {
-                                                                return (<tr>
-                                                                    <td>{item.id}</td>
-                                                                    <td>{item.categorytitle}</td>
-                                                                    <td>{item.title}</td>
-                                                                    <td width='200px'>
-                                                                        <img src={getImageBase() + "product/" + item.photo} alt="" className="img-fluid" />
-                                                                    </td>
-                                                                    <td>{item.price}</td>
-                                                                    <td>{item.stock}</td>
-                                                                    <td>
-                                                                        <button onClick={() => this.deleteProduct(item.id)} type='button' className='btn btn-danger w-100'>Delete</button> <br />
-                                                                        <Link className='btn btn-warning w-100'>Edit</Link> <br />
-                                                                        <Link className='btn btn-secondary w-100'>View Detail</Link>
-                                                                    </td>
-                                                                </tr>)
-                                                            })}
+                                                            {
+                                                                (this.state.products.length == 0) ? this.noProductFound() : this.displayProducts()
+                                                            }
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -142,71 +168,8 @@ export default class Product extends Component {
                     </main>
                 </div>
 
-                {/* Product Detail Modal */}
-                <div className="modal fade" id="productDetailModal" tabIndex="-1" aria-labelledby="productDetailModalLabel" aria-hidden="true">
-                    <div className="modal-dialog modal-md">
-                        <div className="modal-content">
-                            <div className="modal-header bg-primary text-white">
-                                <h5 className="modal-title" id="productDetailModalLabel">Product Detail - {selectedProduct ? selectedProduct.name : ""}</h5>
-                                <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" />
-                            </div>
-                            <div className="modal-body text-center">
-                                {selectedProduct && (
-                                    <>
-                                        <img id="modalProductPhoto" src={selectedProduct.photo} className="img-fluid img-thumbnail shadow mb-3" style={{ maxHeight: "200px" }} alt={selectedProduct.name} />
-                                        <table className="table table-bordered text-start align-middle">
-                                            <tbody>
-                                                <tr>
-                                                    <th>Product ID</th>
-                                                    <td>{selectedProduct.id}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Category</th>
-                                                    <td>{selectedProduct.category}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Product Name</th>
-                                                    <td>{selectedProduct.name}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Price</th>
-                                                    <td>{selectedProduct.price}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Quantity</th>
-                                                    <td>{selectedProduct.qty}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Weight</th>
-                                                    <td>{selectedProduct.weight}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Size</th>
-                                                    <td>{selectedProduct.size}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Description</th>
-                                                    <td>{selectedProduct.detail}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Is Live</th>
-                                                    <td>
-                                                        <span className={`badge ${selectedProduct.islive === "Yes" ? "text-bg-success" : "text-bg-danger"}`}>
-                                                            {selectedProduct.islive}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </>
-                                )}
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+
             </div>
         );
     }

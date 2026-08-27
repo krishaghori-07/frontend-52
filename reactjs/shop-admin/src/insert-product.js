@@ -5,7 +5,36 @@ export default class InsertProduct extends Component {
     handleSubmit = (e) => {
         alert("Product added successfully!");
     };
+    constructor(props) {
+        super(props);
+        this.state = {
+            category: '',    // Maps to <select id="category"> (defaultValue is "")
+            name: '',        // Maps to <input id="name">
+            price: '',       // Maps to <input id="price">
+            quantity: '',    // Maps to <input id="quantity">
+            weight: '',      // Maps to <input id="weight">
+            size: '',        // Maps to <input id="size">
+            photo: null,     // Maps to <input id="photo" type="file"> (null is best for file objects)
+            detail: '',      // Maps to <textarea id="detail">
+            islive: 'Yes'    // Maps to <input name="islive"> (defaultChecked is on "Yes")
+        };
+    }
 
+    updateValue = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    updatePhoto = (e) => {
+        this.setState({
+            [e.target.name]: e.target.files[0]
+        });
+    }
+    handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(this.state);
+    }
     render() {
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -46,7 +75,10 @@ export default class InsertProduct extends Component {
                                                         {/* Category select */}
                                                         <div className="col-md-6">
                                                             <label htmlFor="category" className="form-label fw-semibold">Category</label>
-                                                            <select className="form-select" id="category" required defaultValue="">
+                                                            <select
+                                                            name="category"
+                                                            onChange={(e) => this.updateValue(e)}
+                                                            className="form-select" id="category" required defaultValue="">
                                                                 <option value="" disabled>Select category...</option>
                                                                 <option value="Electronics">Electronics</option>
                                                                 <option value="Apparel">Apparel</option>
@@ -58,7 +90,11 @@ export default class InsertProduct extends Component {
                                                         {/* Name */}
                                                         <div className="col-md-6">
                                                             <label htmlFor="name" className="form-label fw-semibold">Product Name</label>
-                                                            <input type="text" className="form-control" id="name" placeholder="e.g. Wireless Bluetooth Headphones" required />
+                                                            <input type="text"
+                                                                name="name"
+                                                                value={this.state.name}
+                                                                onChange={(e) => this.updateValue(e)}
+                                                                className="form-control" id="name" placeholder="e.g. Wireless Bluetooth Headphones" required />
                                                         </div>
                                                     </div>
 
@@ -66,19 +102,32 @@ export default class InsertProduct extends Component {
                                                         {/* Price */}
                                                         <div className="col-md-4">
                                                             <label htmlFor="price" className="form-label fw-semibold">Price ($)</label>
-                                                            <input type="number" step="0.01" min="0" className="form-control" id="price" placeholder="0.00" required />
+                                                            <input type="number" step="0.01" min="0"
+                                                                name="price"
+                                                                value={this.state.price}
+                                                                onChange={(e) => this.updateValue(e)}
+                                                                className="form-control" id="price" placeholder="0.00" required />
                                                         </div>
 
                                                         {/* Quantity */}
                                                         <div className="col-md-4">
                                                             <label htmlFor="quantity" className="form-label fw-semibold">Quantity</label>
-                                                            <input type="number" min="0" className="form-control" id="quantity" placeholder="0" required />
+                                                            <input type="number" min="0" 
+                                                            name="quantity"
+                                                            className="form-control"
+                                                                value={this.state.quantity}
+                                                                onChange={(e) => this.updateValue(e)}
+                                                                id="quantity" placeholder="0" required />
                                                         </div>
 
                                                         {/* Weight */}
                                                         <div className="col-md-4">
                                                             <label htmlFor="weight" className="form-label fw-semibold">Weight</label>
-                                                            <input type="text" className="form-control" id="weight" placeholder="e.g. 0.25 kg" />
+                                                            <input type="text"
+                                                                name="weight"
+                                                                value={this.state.weight}
+                                                                onChange={(e) => this.updateValue(e)}
+                                                                className="form-control" id="weight" placeholder="e.g. 0.25 kg" />
                                                         </div>
                                                     </div>
 
@@ -86,13 +135,20 @@ export default class InsertProduct extends Component {
                                                         {/* Size */}
                                                         <div className="col-md-4">
                                                             <label htmlFor="size" className="form-label fw-semibold">Size</label>
-                                                            <input type="text" className="form-control" id="size" placeholder="e.g. Medium, 15-inch" />
+                                                            <input type="text"
+                                                                name="size"
+                                                                value={this.state.size}
+                                                                onChange={(e) => this.updateValue(e)}
+                                                                className="form-control" id="size" placeholder="e.g. Medium, 15-inch" />
                                                         </div>
 
                                                         {/* Photo file upload */}
                                                         <div className="col-md-8">
                                                             <label htmlFor="photo" className="form-label fw-semibold">Product Photo</label>
-                                                            <input type="file" className="form-control" id="photo" required />
+                                                            <input type="file"
+                                                                name="photo"
+                                                                onChange={(e) => this.updatePhoto(e)}
+                                                                className="form-control" id="photo" required />
                                                         </div>
                                                     </div>
 
@@ -100,7 +156,12 @@ export default class InsertProduct extends Component {
                                                         {/* Detail description */}
                                                         <div className="col-12">
                                                             <label htmlFor="detail" className="form-label fw-semibold">Product Detail / Description</label>
-                                                            <textarea className="form-control" id="detail" rows="4" placeholder="Enter product description here..." required />
+                                                            <textarea 
+                                                            name="detail"
+                                                            className="form-control" id="detail" rows="4"
+                                                                value={this.state.detail}
+                                                                onChange={(e) => this.updateValue(e)}
+                                                                placeholder="Enter product description here..." required />
                                                         </div>
                                                     </div>
 
@@ -108,11 +169,18 @@ export default class InsertProduct extends Component {
                                                     <div className="mb-4">
                                                         <h6 className="text-secondary small text-uppercase fw-semibold mb-2">Is Live</h6>
                                                         <div className="form-check form-check-inline">
-                                                            <input className="form-check-input" type="radio" name="islive" id="yes" value="Yes" defaultChecked />
+                                                            <input className="form-check-input" type="radio" name="islive" id="yes" value="Yes"
+                                                                value={this.state.islive}
+                                                                onChange={(e) => this.updateValue(e)}
+                                                                required />
                                                             <label className="form-check-label" htmlFor="yes">Yes</label>
                                                         </div>
                                                         <div className="form-check form-check-inline">
-                                                            <input className="form-check-input" type="radio" name="islive" id="no" value="No" />
+                                                            <input className="form-check-input" type="radio" name="islive" id="no" value="No"
+                                                                value={this.state.islive}
+                                                                onChange={(e) => this.updateValue(e)}
+                                                                required
+                                                            />
                                                             <label className="form-check-label" htmlFor="no">No</label>
                                                         </div>
                                                     </div>
