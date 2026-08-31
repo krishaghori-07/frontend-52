@@ -1,5 +1,9 @@
 import { Component } from "react";
 import Menu from "./menu";
+import { getBase } from "./common";
+import axios from "axios";
+import { showError, showMessage } from "./messages";
+import { ToastContainer } from "react-toastify";
 
 export default class InsertProduct extends Component {
     handleSubmit = (e) => {
@@ -8,6 +12,7 @@ export default class InsertProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            categories: [], // stores categories fetched from server
             category: '',    // Maps to <select id="category"> (defaultValue is "")
             name: '',        // Maps to <input id="name">
             price: '',       // Maps to <input id="price">
@@ -34,11 +39,86 @@ export default class InsertProduct extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state);
+        //call api to insert product on server
+        let apiAddress = getBase() + "insert_product.php";
+        //to pass input in api, 1st create object 
+        let form = new FormData();
+        //once object is created store input into it
+        form.append("name", this.state.name);
+        form.append("photo", this.state.photo);
+        form.append("price", this.state.price);
+        form.append("stock", this.state.stock);
+        form.append("detail", this.state.detail);
+        form.append("categoryid", this.state.categoryid);
+        form.append("islive", this.state.islive);
+        let option = {
+            method: 'post',
+            responsetype: 'json',
+            url: apiAddress,
+            data:form,
+        };
+
+        axios(option).then((response) => {
+            console.log(response);
+            let error = response.data[0]['error'];
+            if (error !== 'no') {
+                showError(error);
+            }
+            else 
+            {
+                let success = response.data[1]['success'];
+                let message = response.data[2]['message'];
+                if(success === 'no')
+                {
+                    showError(message);
+                }
+                else 
+                {
+                    showMessage(message);
+                }
+            }
+        }).catch((error) => {
+            showError();
+        });
+    }
+
+    componentDidMount() {
+        let apiAddress = getBase() + "category.php";
+        let option = {
+            url: apiAddress,
+            responsetype: 'json',
+            method: 'get'
+        };
+        axios(option).then((response) => {
+            console.log(response.data);
+            let error = response.data[0]['error'];
+            if (error !== 'no') {
+                showError(error);
+            }
+            else {
+                let total = response.data[1]['total'];
+                if (total === 0) {
+                    showError('no category found');
+                }
+                else {
+                    //remove 2 object from beginning 
+                    response.data.splice(0, 2);
+                    //store remaining data into state array 
+                    this.setState({
+                        categories: response.data
+                    });
+
+                }
+            }
+        }).catch((error) => {
+            showError();
+        });
     }
     render() {
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
                 <div className="app-wrapper">
+                    <ToastContainer />
                     <Menu />
                     <main className="app-main">
                         <div className="app-content-header">
@@ -76,14 +156,12 @@ export default class InsertProduct extends Component {
                                                         <div className="col-md-6">
                                                             <label htmlFor="category" className="form-label fw-semibold">Category</label>
                                                             <select
-                                                            name="category"
-                                                            onChange={(e) => this.updateValue(e)}
-                                                            className="form-select" id="category" required defaultValue="">
-                                                                <option value="" disabled>Select category...</option>
-                                                                <option value="Electronics">Electronics</option>
-                                                                <option value="Apparel">Apparel</option>
-                                                                <option value="Office Supplies">Office Supplies</option>
-                                                                <option value="Home & Kitchen">Home & Kitchen</option>
+                                                                name="category"
+                                                                onChange={(e) => this.updateValue(e)}
+                                                                className="form-select" id="category" required defaultValue="">
+                                                                {this.state.categories.map((item) => {
+                                                                    return <option key={item.id} value={item.id}>{item.title}</option>
+                                                                })}
                                                             </select>
                                                         </div>
 
@@ -112,9 +190,9 @@ export default class InsertProduct extends Component {
                                                         {/* Quantity */}
                                                         <div className="col-md-4">
                                                             <label htmlFor="quantity" className="form-label fw-semibold">Quantity</label>
-                                                            <input type="number" min="0" 
-                                                            name="quantity"
-                                                            className="form-control"
+                                                            <input type="number" min="0"
+                                                                name="quantity"
+                                                                className="form-control"
                                                                 value={this.state.quantity}
                                                                 onChange={(e) => this.updateValue(e)}
                                                                 id="quantity" placeholder="0" required />
@@ -156,9 +234,9 @@ export default class InsertProduct extends Component {
                                                         {/* Detail description */}
                                                         <div className="col-12">
                                                             <label htmlFor="detail" className="form-label fw-semibold">Product Detail / Description</label>
-                                                            <textarea 
-                                                            name="detail"
-                                                            className="form-control" id="detail" rows="4"
+                                                            <textarea
+                                                                name="detail"
+                                                                className="form-control" id="detail" rows="4"
                                                                 value={this.state.detail}
                                                                 onChange={(e) => this.updateValue(e)}
                                                                 placeholder="Enter product description here..." required />
