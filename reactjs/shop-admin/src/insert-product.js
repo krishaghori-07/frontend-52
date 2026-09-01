@@ -4,8 +4,8 @@ import { getBase } from "./common";
 import axios from "axios";
 import { showError, showMessage } from "./messages";
 import { ToastContainer } from "react-toastify";
-
-export default class InsertProduct extends Component {
+import withHooks from "./hoc";
+class InsertProduct extends Component {
     handleSubmit = (e) => {
         alert("Product added successfully!");
     };
@@ -21,7 +21,7 @@ export default class InsertProduct extends Component {
             size: '',        // Maps to <input id="size">
             photo: null,     // Maps to <input id="photo" type="file"> (null is best for file objects)
             detail: '',      // Maps to <textarea id="detail">
-            islive: 'Yes'    // Maps to <input name="islive"> (defaultChecked is on "Yes")
+            islive: 1    // Maps to <input name="islive"> (defaultChecked is on "Yes")
         };
     }
 
@@ -41,44 +41,47 @@ export default class InsertProduct extends Component {
         console.log(this.state);
         //call api to insert product on server
         let apiAddress = getBase() + "insert_product.php";
+        console.log(apiAddress);
         //to pass input in api, 1st create object 
         let form = new FormData();
         //once object is created store input into it
         form.append("name", this.state.name);
         form.append("photo", this.state.photo);
         form.append("price", this.state.price);
-        form.append("stock", this.state.stock);
+        form.append("stock", this.state.quantity);
         form.append("detail", this.state.detail);
-        form.append("categoryid", this.state.categoryid);
+        form.append("categoryid", this.state.category);
         form.append("islive", this.state.islive);
+        console.log(form);
         let option = {
-            method: 'post',
-            responsetype: 'json',
             url: apiAddress,
-            data:form,
+            method: 'post',
+            responseType: 'json',
+            data: form,
         };
-
+        
         axios(option).then((response) => {
-            console.log(response);
+            console.log(response.data);
             let error = response.data[0]['error'];
+            console.log(error);
             if (error !== 'no') {
                 showError(error);
             }
-            else 
-            {
+            else {
                 let success = response.data[1]['success'];
                 let message = response.data[2]['message'];
-                if(success === 'no')
-                {
+                if (success === 'no') {
                     showError(message);
                 }
-                else 
-                {
+                else {
                     showMessage(message);
+                    // then display product screen to user 
+                    this.props.navigate("/product");
                 }
             }
         }).catch((error) => {
             showError();
+            console.log(error);
         });
     }
 
@@ -247,14 +250,14 @@ export default class InsertProduct extends Component {
                                                     <div className="mb-4">
                                                         <h6 className="text-secondary small text-uppercase fw-semibold mb-2">Is Live</h6>
                                                         <div className="form-check form-check-inline">
-                                                            <input className="form-check-input" type="radio" name="islive" id="yes" value="Yes"
+                                                            <input className="form-check-input" type="radio" name="islive" id="yes" value="1"
                                                                 value={this.state.islive}
                                                                 onChange={(e) => this.updateValue(e)}
                                                                 required />
                                                             <label className="form-check-label" htmlFor="yes">Yes</label>
                                                         </div>
                                                         <div className="form-check form-check-inline">
-                                                            <input className="form-check-input" type="radio" name="islive" id="no" value="No"
+                                                            <input className="form-check-input" type="radio" name="islive" id="no" value="0"
                                                                 value={this.state.islive}
                                                                 onChange={(e) => this.updateValue(e)}
                                                                 required
@@ -282,3 +285,4 @@ export default class InsertProduct extends Component {
         );
     }
 }
+export default withHooks(InsertProduct);
