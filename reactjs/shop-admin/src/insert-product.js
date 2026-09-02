@@ -59,7 +59,7 @@ class InsertProduct extends Component {
             responseType: 'json',
             data: form,
         };
-        
+
         axios(option).then((response) => {
             console.log(response.data);
             let error = response.data[0]['error'];
@@ -75,8 +75,11 @@ class InsertProduct extends Component {
                 }
                 else {
                     showMessage(message);
-                    // then display product screen to user 
-                    this.props.navigate("/product");
+                    //user navigate after 2 seconds pause 
+                    setTimeout(() => {
+                        // then display product screen to user 
+                        this.props.navigate("/product");
+                    },2000);
                 }
             }
         }).catch((error) => {

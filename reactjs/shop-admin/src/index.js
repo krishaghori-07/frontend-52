@@ -16,6 +16,7 @@ import Users from './users';
 import UpdateProduct from './update-product';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
+import ViewProductDetail from './view-product-detail';
 //create routing function 
 function MyRouter() {
     return (<CookiesProvider>
@@ -35,6 +36,8 @@ function MyRouter() {
                 <Route path='/product' element={<Product />} />
                 <Route path='/insert-product' element={<InsertProduct />} />
                 <Route path='/edit-product' element={<EditProduct />} />
+                {/* dynamic route  */}
+                <Route path='/view-product-detail/:productid' element={<ViewProductDetail />} />
 
                 <Route path='/order-detail' element={<OrderDetail />} />
                 <Route path='/order' element={<Orders />} />

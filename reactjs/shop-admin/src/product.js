@@ -98,7 +98,7 @@ export default class Product extends Component {
                 <td>
                     <button onClick={() => this.deleteProduct(item.id)} type='button' className='btn btn-danger w-100'>Delete</button> <br />
                     <Link className='btn btn-warning w-100'>Edit</Link> <br />
-                    <Link className='btn btn-secondary w-100'>View Detail</Link>
+                    <Link to={"/view-product-detail/" + item.id} className='btn btn-secondary w-100'>View Detail</Link>
                 </td>
             </tr>)
         })
