@@ -1,75 +1,57 @@
 import { Component } from "react";
 import Menu from "./menu";
-
-const productDatabase = {
-    "201": {
-        id: "201",
-        category: "Electronics",
-        name: "Wireless Bluetooth Headphones",
-        photo: "http://www.picsum.photos/100",
-        price: "99.00",
-        qty: "45",
-        weight: "0.25 kg",
-        size: "Medium",
-        detail: "High-quality wireless over-ear headphones with active noise cancellation and 40h battery life.",
-        islive: "Yes"
-    },
-    "202": {
-        id: "202",
-        category: "Apparel",
-        name: "Leather Trifold Wallet",
-        photo: "http://www.picsum.photos/101",
-        price: "89.99",
-        qty: "12",
-        weight: "0.10 kg",
-        size: "Small",
-        detail: "Genuine cowhide leather trifold wallet featuring multiple card slots and RFID protection.",
-        islive: "Yes"
-    },
-    "203": {
-        id: "203",
-        category: "Office Supplies",
-        name: "Mechanical Gaming Keyboard",
-        photo: "http://www.picsum.photos/102",
-        price: "120.00",
-        qty: "28",
-        weight: "1.10 kg",
-        size: "Full Size",
-        detail: "RGB mechanical keyboard with blue tactile switches, anti-ghosting keys, and aluminum top frame.",
-        islive: "No"
-    }
-};
-
-export default class EditProduct extends Component {
+import axios from "axios";
+import { getBase, getImageBase } from "./common";
+import { showError, showMessage } from "./messages";
+import withHooks from "./hoc";
+class EditProduct extends Component {
     constructor(props) {
         super(props);
+
+        //state array
         this.state = {
-            product: null,
-            notFound: false
+            products: [],
+            isProductFetch: false
         };
     }
 
     componentDidMount() {
-        const params = new URLSearchParams(window.location.search);
-        const productId = params.get("id");
-        const product = productDatabase[productId];
-        if (product) {
-            this.setState({ product });
-        } else {
-            this.setState({ notFound: true });
-        }
+        //whenever we want to fetch and display data from server, we use componentDidMount method
+        let productid = this.props.params.productid;
+        let apiAddress = getBase() + "product.php?productid=" + productid;
+        console.log(apiAddress);
+        // call api 
+        axios(apiAddress).then((response) => {
+            console.log(response.data);
+            //check error
+            let error = response.data[0]['error'];
+            if (error !== 'no') {
+                showError(error);
+            }
+            else {
+                //there is no error 
+                let total = response.data[1]['total'];
+                if (total === 0) {
+                    showError("no product found");
+                }
+                else {
+                    //delete 2 objects
+                    response.data.splice(0, 2);
+                    this.setState({
+                        products: [...this.state.products, response.data[0]],
+                        isProductFetch: true
+                    },() => {
+                        console.log(this.state.products);
+                    });
+                }
+            }
+        }).catch((error) => showError());
     }
-
-    handleSubmit = (e) => {
-        alert("Product updated successfully!");
-    };
-
     render() {
-        const { product, notFound } = this.state;
-
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
                 <div className="app-wrapper">
+                    <showError />
                     <Menu />
                     <main className="app-main">
                         <div className="app-content-header">
@@ -92,27 +74,23 @@ export default class EditProduct extends Component {
 
                         <div className="app-content">
                             <div className="container-fluid">
-                                
-                                {/* Error Alert */}
-                                {notFound && (
-                                    <div id="errorAlert" className="alert alert-danger" role="alert">
-                                        <h4 className="alert-heading">Product Not Found</h4>
-                                        <p className="mb-0">The product ID requested does not exist or has been deleted.</p>
+
+
+
+
+                                <div id="editCard" className="card">
+                                    <div className="card-header text-bg-primary">
+                                        <h3 className="card-title fs-5 mb-0">Edit Product - <span></span></h3>
                                     </div>
-                                )}
 
-                                {product && (
-                                    <div id="editCard" className="card">
-                                        <div className="card-header text-bg-primary">
-                                            <h3 className="card-title fs-5 mb-0">Edit Product - <span>ID {product.id}</span></h3>
-                                        </div>
-
-                                        <div className="card-body">
-                                            <div className="row">
+                                    <div className="card-body">
+                                        {this.state.isProductFetch == true && this.state.products.map((item) => {
+                                            return (<div className="row">
                                                 {/* Current Product Photo column */}
                                                 <div className="col-md-3 text-center border-end mb-4 mb-md-0">
                                                     <h5 className="mb-3 mt-2 pb-2 border-bottom fw-semibold">Current Photo</h5>
-                                                    <img id="editProductPreview" src={product.photo} className="img-fluid img-thumbnail shadow mb-3" style={{ maxHeight: "250px" }} alt="Product Image" />
+                                                    <img id="editProductPreview" 
+                                                    src={getImageBase() + "product/" + item.photo} className="img-fluid img-thumbnail shadow mb-3" style={{ maxHeight: "250px" }} alt="Product Image" />
                                                 </div>
 
                                                 {/* Form column */}
@@ -123,7 +101,7 @@ export default class EditProduct extends Component {
                                                             {/* Category select */}
                                                             <div className="col-md-6">
                                                                 <label htmlFor="category" className="form-label fw-semibold">Category</label>
-                                                                <select className="form-select" id="category" defaultValue={product.category} required>
+                                                                <select className="form-select" id="category" required>
                                                                     <option value="" disabled>Select category...</option>
                                                                     <option value="Electronics">Electronics</option>
                                                                     <option value="Apparel">Apparel</option>
@@ -135,7 +113,9 @@ export default class EditProduct extends Component {
                                                             {/* Name */}
                                                             <div className="col-md-6">
                                                                 <label htmlFor="name" className="form-label fw-semibold">Product Name</label>
-                                                                <input type="text" className="form-control" id="name" defaultValue={product.name} required />
+                                                                <input type="text" className="form-control"
+                                                                    value={item.title}
+                                                                    id="name" required />
                                                             </div>
                                                         </div>
 
@@ -143,19 +123,25 @@ export default class EditProduct extends Component {
                                                             {/* Price */}
                                                             <div className="col-md-4">
                                                                 <label htmlFor="price" className="form-label fw-semibold">Price ($)</label>
-                                                                <input type="number" step="0.01" min="0" className="form-control" id="price" defaultValue={product.price} required />
+                                                                <input type="number" step="0.01" min="0" 
+                                                                value={item.price}
+                                                                className="form-control" id="price" required />
                                                             </div>
 
                                                             {/* Quantity */}
                                                             <div className="col-md-4">
                                                                 <label htmlFor="quantity" className="form-label fw-semibold">Quantity</label>
-                                                                <input type="number" min="0" className="form-control" id="quantity" defaultValue={product.qty} required />
+                                                                <input type="number" min="0" 
+                                                                value={item.stock}
+                                                                className="form-control" id="quantity" required />
                                                             </div>
 
                                                             {/* Weight */}
                                                             <div className="col-md-4">
                                                                 <label htmlFor="weight" className="form-label fw-semibold">Weight</label>
-                                                                <input type="text" className="form-control" id="weight" defaultValue={product.weight} />
+                                                                <input type="text" 
+                                                                value={item.weight}
+                                                                className="form-control" id="weight" />
                                                             </div>
                                                         </div>
 
@@ -163,7 +149,9 @@ export default class EditProduct extends Component {
                                                             {/* Size */}
                                                             <div className="col-md-4">
                                                                 <label htmlFor="size" className="form-label fw-semibold">Size</label>
-                                                                <input type="text" className="form-control" id="size" defaultValue={product.size} />
+                                                                <input type="text" 
+                                                                value={item.size}
+                                                                className="form-control" id="size" />
                                                             </div>
 
                                                             {/* Photo file upload */}
@@ -178,7 +166,7 @@ export default class EditProduct extends Component {
                                                             {/* Detail description */}
                                                             <div className="col-12">
                                                                 <label htmlFor="detail" className="form-label fw-semibold">Product Detail / Description</label>
-                                                                <textarea className="form-control" id="detail" rows="4" defaultValue={product.detail} required />
+                                                                <textarea className="form-control" id="detail" rows="4" required value={item.detail} />
                                                             </div>
                                                         </div>
 
@@ -186,11 +174,15 @@ export default class EditProduct extends Component {
                                                         <div className="mb-4">
                                                             <h6 className="text-secondary small text-uppercase fw-semibold mb-2">Is Live</h6>
                                                             <div className="form-check form-check-inline">
-                                                                <input className="form-check-input" type="radio" name="islive" id="yes" value="Yes" defaultChecked={product.islive === "Yes"} />
+                                                                <input className="form-check-input" type="radio" name="islive" id="yes" value="1"
+                                                                defaultChecked={item.islive === '1'}
+                                                                />
                                                                 <label className="form-check-label" htmlFor="yes">Yes</label>
                                                             </div>
                                                             <div className="form-check form-check-inline">
-                                                                <input className="form-check-input" type="radio" name="islive" id="no" value="No" defaultChecked={product.islive === "No"} />
+                                                                <input className="form-check-input" type="radio" name="islive" id="no" value="0"
+                                                                defaultChecked={item.islive === '0'}
+                                                                />
                                                                 <label className="form-check-label" htmlFor="no">No</label>
                                                             </div>
                                                         </div>
@@ -203,10 +195,10 @@ export default class EditProduct extends Component {
                                                     </form>
                                                     {/* Form */}
                                                 </div>
-                                            </div>
-                                        </div>
+                                            </div>);
+                                        })}
                                     </div>
-                                )}
+                                </div>
                             </div>
                         </div>
                     </main>
@@ -215,3 +207,4 @@ export default class EditProduct extends Component {
         );
     }
 }
+export default withHooks(EditProduct)
