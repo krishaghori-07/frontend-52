@@ -10,13 +10,18 @@ class EditProduct extends Component {
 
         //state array
         this.state = {
-            products: [],
+            title: '',
+            price: '',
+            size: '',
+            weight: '',
+            oldPhoto: '',
+            categoryid: '',
+            stock: '',
+            categories: [],
             isProductFetch: false
         };
     }
-
-    componentDidMount() {
-        //whenever we want to fetch and display data from server, we use componentDidMount method
+    fetchProduct = () => {
         let productid = this.props.params.productid;
         let apiAddress = getBase() + "product.php?productid=" + productid;
         console.log(apiAddress);
@@ -38,14 +43,74 @@ class EditProduct extends Component {
                     //delete 2 objects
                     response.data.splice(0, 2);
                     this.setState({
-                        products: [...this.state.products, response.data[0]],
+                        title: response.data[0]['title'],
+                        price: response.data[0]['price'],
+                        stock: response.data[0]['stock'],
+                        size: response.data[0]['size'],
+                        weight: response.data[0]['weight'],
+                        detail: response.data[0]['detail'],
+                        islive: response.data[0]['islive'],
+                        oldPhoto: response.data[0]['photo'],
                         isProductFetch: true
-                    },() => {
+                    }, () => {
                         console.log(this.state.products);
                     });
                 }
             }
         }).catch((error) => showError());
+    }
+
+    fetchCategories = () => {
+        let apiAddress = getBase() + "category.php";
+        let option = {
+            url: apiAddress,
+            responsetype: 'json',
+            method: 'get'
+        };
+        axios(option).then((response) => {
+            console.log(response.data);
+            let error = response.data[0]['error'];
+            if (error !== 'no') {
+                showError(error);
+            }
+            else {
+                let total = response.data[1]['total'];
+                if (total === 0) {
+                    showError('no category found');
+                }
+                else {
+                    //remove 2 object from beginning 
+                    response.data.splice(0, 2);
+                    //store remaining data into state array 
+                    this.setState({
+                        categories: response.data
+                    });
+
+                }
+            }
+        }).catch((error) => {
+            showError();
+        });
+    }
+    componentDidMount() {
+        //whenever we want to fetch and display data from server, we use componentDidMount method
+        this.fetchProduct();
+        this.fetchCategories();
+    }
+    updateValue = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    updatePhoto = (e) => {
+        this.setState({
+            [e.target.name]: e.target.files[0]
+        });
+    }
+    onSubmitForm = (e) => {
+        e.preventDefault(); //required 
+        console.log(this.state);
     }
     render() {
         return (
@@ -84,64 +149,75 @@ class EditProduct extends Component {
                                     </div>
 
                                     <div className="card-body">
-                                        {this.state.isProductFetch == true && this.state.products.map((item) => {
-                                            return (<div className="row">
-                                                {/* Current Product Photo column */}
-                                                <div className="col-md-3 text-center border-end mb-4 mb-md-0">
-                                                    <h5 className="mb-3 mt-2 pb-2 border-bottom fw-semibold">Current Photo</h5>
-                                                    <img id="editProductPreview" 
-                                                    src={getImageBase() + "product/" + item.photo} className="img-fluid img-thumbnail shadow mb-3" style={{ maxHeight: "250px" }} alt="Product Image" />
-                                                </div>
+                                        <div className="row">
+                                            {/* Current Product Photo column */}
+                                            <div className="col-md-3 text-center border-end mb-4 mb-md-0">
+                                                <h5 className="mb-3 mt-2 pb-2 border-bottom fw-semibold">Current Photo</h5>
+                                                <img id="editProductPreview"
+                                                    src={getImageBase() + "product/" + this.state.oldPhoto} className="img-fluid img-thumbnail shadow mb-3" style={{ maxHeight: "250px" }} alt="Product Image" />
+                                            </div>
 
-                                                {/* Form column */}
-                                                <div className="col-md-9">
-                                                    {/* Form */}
-                                                    <form action="product.html" method="GET" onSubmit={this.handleSubmit}>
-                                                        <div className="row g-3 mb-3">
-                                                            {/* Category select */}
-                                                            <div className="col-md-6">
-                                                                <label htmlFor="category" className="form-label fw-semibold">Category</label>
-                                                                <select className="form-select" id="category" required>
-                                                                    <option value="" disabled>Select category...</option>
-                                                                    <option value="Electronics">Electronics</option>
-                                                                    <option value="Apparel">Apparel</option>
-                                                                    <option value="Office Supplies">Office Supplies</option>
-                                                                    <option value="Home & Kitchen">Home & Kitchen</option>
-                                                                </select>
-                                                            </div>
+                                            {/* Form column */}
+                                            <div className="col-md-9">
+                                                {/* Form */}
+                                                <form method="POST" onSubmit={this.onSubmitForm}>
+                                                    <div className="row g-3 mb-3">
+                                                        {/* Category select */}
+                                                        <div className="col-md-6">
+                                                            <label htmlFor="category" className="form-label fw-semibold">Category</label>
+                                                            <select
+                                                                name="category"
+                                                                onChange={(e) => this.updateValue(e)}
 
-                                                            {/* Name */}
-                                                            <div className="col-md-6">
-                                                                <label htmlFor="name" className="form-label fw-semibold">Product Name</label>
-                                                                <input type="text" className="form-control"
-                                                                    value={item.title}
-                                                                    id="name" required />
-                                                            </div>
+                                                                className="form-select" id="category" required>
+                                                                {this.state.categories.map((category_item) => {
+                                                                    if (category_item.id == this.state.categoryid)
+                                                                        return <option key={category_item.id} value={category_item.id} selected>{category_item.title}</option>
+                                                                    else
+                                                                        return <option key={category_item.id} value={category_item.id}>{category_item.title}</option>
+                                                                })}
+                                                            </select>
                                                         </div>
 
+                                                        {/* Name */}
+                                                        <div className="col-md-6">
+                                                            <label htmlFor="name" className="form-label fw-semibold">Product Name</label>
+                                                            <input type="text"
+                                                                name="title"
+                                                                onChange={(e) => this.updateValue(e)}
+                                                                className="form-control"
+                                                                value={this.state.title}
+                                                                id="name" required />
+                                                        </div>
                                                         <div className="row g-3 mb-3">
                                                             {/* Price */}
                                                             <div className="col-md-4">
                                                                 <label htmlFor="price" className="form-label fw-semibold">Price ($)</label>
-                                                                <input type="number" step="0.01" min="0" 
-                                                                value={item.price}
-                                                                className="form-control" id="price" required />
+                                                                <input type="number" step="0.01" min="0"
+                                                                    name='price'
+                                                                    value={this.state.price}
+                                                                    className="form-control" id="price" required />
                                                             </div>
 
                                                             {/* Quantity */}
                                                             <div className="col-md-4">
                                                                 <label htmlFor="quantity" className="form-label fw-semibold">Quantity</label>
-                                                                <input type="number" min="0" 
-                                                                value={item.stock}
-                                                                className="form-control" id="quantity" required />
+                                                                <input type="number" min="0"
+                                                                    name="quantity"
+                                                                    onChange={(e) => this.updateValue(e)}
+
+                                                                    value={this.state.stock}
+                                                                    className="form-control" id="quantity" required />
                                                             </div>
 
                                                             {/* Weight */}
                                                             <div className="col-md-4">
                                                                 <label htmlFor="weight" className="form-label fw-semibold">Weight</label>
-                                                                <input type="text" 
-                                                                value={item.weight}
-                                                                className="form-control" id="weight" />
+                                                                <input type="text"
+                                                                    name="weight"
+                                                                    onChange={(e) => this.updateValue(e)}
+                                                                    value={this.state.weight}
+                                                                    className="form-control" id="weight" />
                                                             </div>
                                                         </div>
 
@@ -149,15 +225,20 @@ class EditProduct extends Component {
                                                             {/* Size */}
                                                             <div className="col-md-4">
                                                                 <label htmlFor="size" className="form-label fw-semibold">Size</label>
-                                                                <input type="text" 
-                                                                value={item.size}
-                                                                className="form-control" id="size" />
+                                                                <input type="text"
+                                                                    name="size"
+                                                                    onChange={(e) => this.updateValue(e)}
+                                                                    value={this.state.size}
+                                                                    className="form-control" id="size" />
                                                             </div>
 
                                                             {/* Photo file upload */}
                                                             <div className="col-md-8">
                                                                 <label htmlFor="photo" className="form-label fw-semibold">Change Photo</label>
-                                                                <input type="file" className="form-control" id="photo" />
+                                                                <input type="file"
+                                                                    name="photo"
+                                                                    onChange={(e) => this.updatePhoto(e)}
+                                                                    className="form-control" id="photo" />
                                                                 <span className="text-secondary small">Leave blank to keep existing photo.</span>
                                                             </div>
                                                         </div>
@@ -166,7 +247,10 @@ class EditProduct extends Component {
                                                             {/* Detail description */}
                                                             <div className="col-12">
                                                                 <label htmlFor="detail" className="form-label fw-semibold">Product Detail / Description</label>
-                                                                <textarea className="form-control" id="detail" rows="4" required value={item.detail} />
+                                                                <textarea
+                                                                    name="detail"
+                                                                    onChange={(e) => this.updateValue(e)}
+                                                                    className="form-control" id="detail" rows="4" required value={this.state.detail} />
                                                             </div>
                                                         </div>
 
@@ -175,13 +259,15 @@ class EditProduct extends Component {
                                                             <h6 className="text-secondary small text-uppercase fw-semibold mb-2">Is Live</h6>
                                                             <div className="form-check form-check-inline">
                                                                 <input className="form-check-input" type="radio" name="islive" id="yes" value="1"
-                                                                defaultChecked={item.islive === '1'}
+                                                                    onChange={(e) => this.updateValue(e)}
+                                                                    defaultChecked={this.state.islive === '1'}
                                                                 />
                                                                 <label className="form-check-label" htmlFor="yes">Yes</label>
                                                             </div>
                                                             <div className="form-check form-check-inline">
                                                                 <input className="form-check-input" type="radio" name="islive" id="no" value="0"
-                                                                defaultChecked={item.islive === '0'}
+                                                                    onChange={(e) => this.updateValue(e)}
+                                                                    defaultChecked={this.state.islive === '0'}
                                                                 />
                                                                 <label className="form-check-label" htmlFor="no">No</label>
                                                             </div>
@@ -192,11 +278,13 @@ class EditProduct extends Component {
                                                             <a href="product.html" className="btn btn-dark me-2">Cancel</a>
                                                             <button type="submit" className="btn btn-primary">Save Changes</button>
                                                         </div>
-                                                    </form>
-                                                    {/* Form */}
-                                                </div>
-                                            </div>);
-                                        })}
+                                                    </div>
+
+
+                                                </form>
+                                                {/* Form */}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

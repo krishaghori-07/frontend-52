@@ -120,6 +120,7 @@ class InsertProduct extends Component {
             showError();
         });
     }
+   
     render() {
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -188,8 +189,8 @@ class InsertProduct extends Component {
                                                             <label htmlFor="price" className="form-label fw-semibold">Price ($)</label>
                                                             <input type="number" step="0.01" min="0"
                                                                 name="price"
-                                                                value={this.state.price}
                                                                 onChange={(e) => this.updateValue(e)}
+                                                                value={this.state.price}
                                                                 className="form-control" id="price" placeholder="0.00" required />
                                                         </div>
 
@@ -198,9 +199,9 @@ class InsertProduct extends Component {
                                                             <label htmlFor="quantity" className="form-label fw-semibold">Quantity</label>
                                                             <input type="number" min="0"
                                                                 name="quantity"
+                                                                onChange={(e) => this.updateValue(e)}
                                                                 className="form-control"
                                                                 value={this.state.quantity}
-                                                                onChange={(e) => this.updateValue(e)}
                                                                 id="quantity" placeholder="0" required />
                                                         </div>
 
@@ -209,8 +210,8 @@ class InsertProduct extends Component {
                                                             <label htmlFor="weight" className="form-label fw-semibold">Weight</label>
                                                             <input type="text"
                                                                 name="weight"
-                                                                value={this.state.weight}
                                                                 onChange={(e) => this.updateValue(e)}
+                                                                value={this.state.weight}
                                                                 className="form-control" id="weight" placeholder="e.g. 0.25 kg" />
                                                         </div>
                                                     </div>
@@ -221,8 +222,8 @@ class InsertProduct extends Component {
                                                             <label htmlFor="size" className="form-label fw-semibold">Size</label>
                                                             <input type="text"
                                                                 name="size"
-                                                                value={this.state.size}
                                                                 onChange={(e) => this.updateValue(e)}
+                                                                value={this.state.size}
                                                                 className="form-control" id="size" placeholder="e.g. Medium, 15-inch" />
                                                         </div>
 
@@ -241,9 +242,9 @@ class InsertProduct extends Component {
                                                         <div className="col-12">
                                                             <label htmlFor="detail" className="form-label fw-semibold">Product Detail / Description</label>
                                                             <textarea
-                                                                name="detail"
                                                                 className="form-control" id="detail" rows="4"
                                                                 value={this.state.detail}
+                                                                name="detail"
                                                                 onChange={(e) => this.updateValue(e)}
                                                                 placeholder="Enter product description here..." required />
                                                         </div>
