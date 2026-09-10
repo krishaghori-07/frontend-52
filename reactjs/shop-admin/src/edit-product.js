@@ -4,23 +4,29 @@ import axios from "axios";
 import { getBase, getImageBase } from "./common";
 import { showError, showMessage } from "./messages";
 import withHooks from "./hoc";
+import { ToastContainer } from "react-toastify";
+import { data, Link } from "react-router-dom";
+
 class EditProduct extends Component {
     constructor(props) {
         super(props);
 
-        //state array
+        // state object
         this.state = {
             title: '',
             price: '',
             size: '',
             weight: '',
             oldPhoto: '',
+            photo: null,
             categoryid: '',
             stock: '',
-            categories: [],
-            isProductFetch: false
+            detail: '',
+            islive: '',
+            categories: []
         };
     }
+
     fetchProduct = () => {
         let productid = this.props.params.productid;
         let apiAddress = getBase() + "product.php?productid=" + productid;
@@ -28,32 +34,33 @@ class EditProduct extends Component {
         // call api 
         axios(apiAddress).then((response) => {
             console.log(response.data);
-            //check error
+            // check error
             let error = response.data[0]['error'];
             if (error !== 'no') {
                 showError(error);
             }
             else {
-                //there is no error 
+                // there is no error 
                 let total = response.data[1]['total'];
                 if (total === 0) {
                     showError("no product found");
                 }
                 else {
-                    //delete 2 objects
+                    // delete 2 objects
                     response.data.splice(0, 2);
+                    let product = response.data[0];
                     this.setState({
-                        title: response.data[0]['title'],
-                        price: response.data[0]['price'],
-                        stock: response.data[0]['stock'],
-                        size: response.data[0]['size'],
-                        weight: response.data[0]['weight'],
-                        detail: response.data[0]['detail'],
-                        islive: response.data[0]['islive'],
-                        oldPhoto: response.data[0]['photo'],
-                        isProductFetch: true
+                        title: product['title'] || '',
+                        price: product['price'] || '',
+                        stock: product['stock'] || '',
+                        size: product['size'] || '',
+                        weight: product['weight'] || '',
+                        detail: product['detail'] || '',
+                        islive: product['islive'] !== undefined ? String(product['islive']) : '1',
+                        oldPhoto: product['photo'] || '',
+                        categoryid: product['categoryid'] !== undefined ? String(product['categoryid']) : ''
                     }, () => {
-                        console.log(this.state.products);
+                        console.log("Product fetched:", product);
                     });
                 }
             }
@@ -79,27 +86,34 @@ class EditProduct extends Component {
                     showError('no category found');
                 }
                 else {
-                    //remove 2 object from beginning 
+                    // remove 2 object from beginning 
                     response.data.splice(0, 2);
-                    //store remaining data into state array 
+                    // store remaining data into state array 
                     this.setState({
                         categories: response.data
                     });
-
                 }
             }
         }).catch((error) => {
             showError();
         });
     }
+
     componentDidMount() {
-        //whenever we want to fetch and display data from server, we use componentDidMount method
+        // whenever we want to fetch and display data from server, we use componentDidMount method
         this.fetchProduct();
         this.fetchCategories();
+
     }
+
     updateValue = (e) => {
+        let { name, value } = e.target;
         this.setState({
-            [e.target.name]: e.target.value
+            [name]: value,
+            ...(name === 'stock' ? { quantity: value } : {}),
+            ...(name === 'quantity' ? { stock: value } : {}),
+            ...(name === 'categoryid' ? { category: value } : {}),
+            ...(name === 'category' ? { categoryid: value } : {})
         });
     }
 
@@ -108,15 +122,74 @@ class EditProduct extends Component {
             [e.target.name]: e.target.files[0]
         });
     }
+
     onSubmitForm = (e) => {
-        e.preventDefault(); //required 
+        e.preventDefault(); // required 
         console.log(this.state);
+        // call api 
+        let apiAddress = getBase() + "update_product.php";
+        /*
+            •	name (required): Product name 
+            •	photo (required): Product photo (file upload) 
+            •	price (required): Product price 
+            •	stock (required): Product stock quantity 
+            •	detail (required): Product details 
+            •	productid (required): Product ID 
+            •	categoryid (required): Category ID 
+            •	islive (required): Product live status (0 or 1)
+        */
+        //create object of formData class
+        let form = new FormData();
+        form.append("name",this.state.title);
+        form.append("photo",this.state.photo);
+        form.append("price",this.state.price);
+        form.append("stock",this.state.stock);
+        form.append("detail",this.state.detail);
+        form.append("productid",this.props.params.productid);
+        form.append("categoryid",this.state.categoryid);
+        form.append("islive",this.state.islive);
+
+        let option = {
+            url: apiAddress,
+            method: "post",
+            responsetype: "json",
+            data:form
+        };
+
+        axios(option).then((response) => {
+            //when we received data from server
+            console.log(response.data);
+            let error = response.data[0]['error'];
+            if(error!=='no')
+            {
+                showError(error);
+            }
+            else 
+            {
+                let success = response.data[1]['success'];
+                let message = response.data[2]['message'];
+                if(success === 'yes')
+                {
+                    showMessage(message);
+                    setTimeout(() => {
+                        this.props.navigate("/product");
+                    },2000)
+                }
+                else 
+                {
+                    showError(message);
+                }
+            }
+        }).catch((error) => {
+            showError(error);
+        });
     }
+
     render() {
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
                 <div className="app-wrapper">
-                    <showError />
+                    <ToastContainer />
                     <Menu />
                     <main className="app-main">
                         <div className="app-content-header">
@@ -128,7 +201,7 @@ class EditProduct extends Component {
                                     <div className="col-sm-6">
                                         <nav aria-label="breadcrumb">
                                             <ol className="breadcrumb float-sm-end mb-0">
-                                                <li className="breadcrumb-item"><a href="product.html">Products</a></li>
+                                                <li className="breadcrumb-item"><Link to="/product">Products</Link></li>
                                                 <li className="breadcrumb-item active" aria-current="page">Edit Product</li>
                                             </ol>
                                         </nav>
@@ -140,12 +213,9 @@ class EditProduct extends Component {
                         <div className="app-content">
                             <div className="container-fluid">
 
-
-
-
                                 <div id="editCard" className="card">
                                     <div className="card-header text-bg-primary">
-                                        <h3 className="card-title fs-5 mb-0">Edit Product - <span></span></h3>
+                                        <h3 className="card-title fs-5 mb-0">Edit Product - <span>{this.state.title}</span></h3>
                                     </div>
 
                                     <div className="card-body">
@@ -153,8 +223,12 @@ class EditProduct extends Component {
                                             {/* Current Product Photo column */}
                                             <div className="col-md-3 text-center border-end mb-4 mb-md-0">
                                                 <h5 className="mb-3 mt-2 pb-2 border-bottom fw-semibold">Current Photo</h5>
-                                                <img id="editProductPreview"
-                                                    src={getImageBase() + "product/" + this.state.oldPhoto} className="img-fluid img-thumbnail shadow mb-3" style={{ maxHeight: "250px" }} alt="Product Image" />
+                                                {this.state.oldPhoto ? (
+                                                    <img id="editProductPreview"
+                                                        src={getImageBase() + "product/" + this.state.oldPhoto} className="img-fluid img-thumbnail shadow mb-3" style={{ maxHeight: "250px" }} alt={this.state.title || "Product preview"} />
+                                                ) : (
+                                                    <div className="text-muted p-4 border rounded">No photo available</div>
+                                                )}
                                             </div>
 
                                             {/* Form column */}
@@ -166,15 +240,13 @@ class EditProduct extends Component {
                                                         <div className="col-md-6">
                                                             <label htmlFor="category" className="form-label fw-semibold">Category</label>
                                                             <select
-                                                                name="category"
+                                                                name="categoryid"
+                                                                value={this.state.categoryid}
                                                                 onChange={(e) => this.updateValue(e)}
-
                                                                 className="form-select" id="category" required>
+                                                                <option value="">Select Category</option>
                                                                 {this.state.categories.map((category_item) => {
-                                                                    if (category_item.id == this.state.categoryid)
-                                                                        return <option key={category_item.id} value={category_item.id} selected>{category_item.title}</option>
-                                                                    else
-                                                                        return <option key={category_item.id} value={category_item.id}>{category_item.title}</option>
+                                                                    return <option key={category_item.id} value={category_item.id}>{category_item.title}</option>;
                                                                 })}
                                                             </select>
                                                         </div>
@@ -196,6 +268,7 @@ class EditProduct extends Component {
                                                                 <input type="number" step="0.01" min="0"
                                                                     name='price'
                                                                     value={this.state.price}
+                                                                    onChange={(e) => this.updateValue(e)}
                                                                     className="form-control" id="price" required />
                                                             </div>
 
@@ -203,9 +276,8 @@ class EditProduct extends Component {
                                                             <div className="col-md-4">
                                                                 <label htmlFor="quantity" className="form-label fw-semibold">Quantity</label>
                                                                 <input type="number" min="0"
-                                                                    name="quantity"
+                                                                    name="stock"
                                                                     onChange={(e) => this.updateValue(e)}
-
                                                                     value={this.state.stock}
                                                                     className="form-control" id="quantity" required />
                                                             </div>
@@ -260,14 +332,14 @@ class EditProduct extends Component {
                                                             <div className="form-check form-check-inline">
                                                                 <input className="form-check-input" type="radio" name="islive" id="yes" value="1"
                                                                     onChange={(e) => this.updateValue(e)}
-                                                                    defaultChecked={this.state.islive === '1'}
+                                                                    checked={String(this.state.islive) === '1'}
                                                                 />
                                                                 <label className="form-check-label" htmlFor="yes">Yes</label>
                                                             </div>
                                                             <div className="form-check form-check-inline">
                                                                 <input className="form-check-input" type="radio" name="islive" id="no" value="0"
                                                                     onChange={(e) => this.updateValue(e)}
-                                                                    defaultChecked={this.state.islive === '0'}
+                                                                    checked={String(this.state.islive) === '0'}
                                                                 />
                                                                 <label className="form-check-label" htmlFor="no">No</label>
                                                             </div>
@@ -275,7 +347,7 @@ class EditProduct extends Component {
 
                                                         {/* Submit / cancel controls */}
                                                         <div className="text-end border-top pt-3">
-                                                            <a href="product.html" className="btn btn-dark me-2">Cancel</a>
+                                                            <Link to="/product" className="btn btn-dark me-2">Cancel</Link>
                                                             <button type="submit" className="btn btn-primary">Save Changes</button>
                                                         </div>
                                                     </div>
@@ -295,4 +367,4 @@ class EditProduct extends Component {
         );
     }
 }
-export default withHooks(EditProduct)
+export default withHooks(EditProduct);
