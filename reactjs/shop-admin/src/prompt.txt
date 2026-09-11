@@ -1,0 +1,21 @@
+you need to complete following tasks
+    call api & display/insert/update/delete data in category module for below files 
+        category.js 
+        insert-category.js 
+        update-category.js 
+    call api & display in user module 
+        users.js 
+    call api & display in order module 
+        order.js 
+        order-detail.js 
+    call api & display data in dashboard. 
+        dashboard.js 
+
+    for coding reference refer below files & follow them strictly
+        product.js 
+        edit-product.js 
+        insert-product.js 
+    
+    for api refer file API Documentation for online shop.docx
+
+    do not read other files unless and until necessary 

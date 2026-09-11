@@ -1,59 +1,13 @@
 import { Component } from "react";
 import Menu from "./menu";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { getBase } from "./common";
+import { showError, showMessage } from "./messages";
+import { ToastContainer } from "react-toastify";
+import withHooks from "./hoc";
 
-const orderDetails = {
-    "10001": {
-        id: "10001",
-        date: "2026-08-20 14:32",
-        customer: "Alice Johnson",
-        status: "Delivered",
-        payment: "Paid",
-        subtotal: "$143.50",
-        tax: "$15.00",
-        total: "$158.50",
-        items: [
-            { name: "Wireless Bluetooth Headphones", qty: 1, price: "$99.00" },
-            { name: "USB-C Fast Charger Cable (2m)", qty: 2, price: "$14.75" },
-            { name: "Ergonomic Mouse Pad", qty: 1, price: "$15.00" }
-        ],
-        address: "123 Maple St, Springfield, IL 62701",
-        email: "alice.j@example.com"
-    },
-    "10002": {
-        id: "10002",
-        date: "2026-08-21 09:15",
-        customer: "Bob Smith",
-        status: "Pending",
-        payment: "Unpaid",
-        subtotal: "$83.13",
-        tax: "$6.86",
-        total: "$89.99",
-        items: [
-            { name: "Leather Trifold Wallet", qty: 1, price: "$83.13" }
-        ],
-        address: "456 Oak Ave, Metropolis, NY 10001",
-        email: "bob.smith@example.com"
-    },
-    "10003": {
-        id: "10003",
-        date: "2026-08-21 11:00",
-        customer: "Charlie Brown",
-        status: "Shipped",
-        payment: "Paid",
-        subtotal: "$295.61",
-        tax: "$24.39",
-        total: "$320.00",
-        items: [
-            { name: "Mechanical Gaming Keyboard", qty: 1, price: "$120.00" },
-            { name: "Gaming Mouse RGB", qty: 1, price: "$80.00" },
-            { name: "Large Mouse Mat", qty: 1, price: "$95.61" }
-        ],
-        address: "789 Pine Rd, Walnut Creek, CA 94596",
-        email: "charlie@peanuts.com"
-    }
-};
-
-export default class OrderDetail extends Component {
+class OrderDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -62,15 +16,51 @@ export default class OrderDetail extends Component {
         };
     }
 
-    componentDidMount() {
-        const params = new URLSearchParams(window.location.search);
-        const orderId = params.get("id");
-        const order = orderDetails[orderId];
-        if (order) {
-            this.setState({ order });
-        } else {
+    fetchOrderDetail = () => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const orderId = this.props.params?.orderid || queryParams.get("id");
+
+        if (!orderId) {
             this.setState({ notFound: true });
+            return;
         }
+
+        let apiAddress = getBase() + "orders.php?id=" + orderId;
+        let option = {
+            url: apiAddress,
+            method: 'get',
+            responseType: 'json'
+        };
+
+        axios(option).then((response) => {
+            console.log(response.data);
+            let error = response.data[0]['error'];
+            if (error !== 'no') {
+                showError(error);
+                this.setState({ notFound: true });
+            }
+            else {
+                let total = response.data[1]['total'];
+                if (total === 0) {
+                    showError("Order not found");
+                    this.setState({ notFound: true });
+                }
+                else {
+                    response.data.splice(0, 2);
+                    this.setState({
+                        order: response.data[0],
+                        notFound: false
+                    });
+                }
+            }
+        }).catch((error) => {
+            showError();
+            this.setState({ notFound: true });
+        });
+    }
+
+    componentDidMount() {
+        this.fetchOrderDetail();
     }
 
     handlePrint = () => {
@@ -78,14 +68,54 @@ export default class OrderDetail extends Component {
     };
 
     handleSendInvoice = () => {
-        alert("Invoice sent successfully!");
+        showMessage("Invoice sent successfully to customer!");
     };
+
+    getOrderStatusBadge = (status) => {
+        switch (String(status)) {
+            case '1':
+                return <span className="badge text-bg-warning">Pending</span>;
+            case '2':
+                return <span className="badge text-bg-primary">Processing</span>;
+            case '3':
+                return <span className="badge text-bg-info">Shipped</span>;
+            case '4':
+                return <span className="badge text-bg-success">Delivered</span>;
+            case '5':
+                return <span className="badge text-bg-danger">Cancelled</span>;
+            default:
+                return <span className="badge text-bg-secondary">{status || "Unknown"}</span>;
+        }
+    }
+
+    getPaymentStatusBadge = (status) => {
+        switch (String(status)) {
+            case '1':
+                return <span className="badge text-bg-danger">Unpaid</span>;
+            case '2':
+                return <span className="badge text-bg-success">Paid</span>;
+            default:
+                return <span className="badge text-bg-secondary">Pending</span>;
+        }
+    }
+
+    getPaymentMode = (mode) => {
+        switch (String(mode)) {
+            case '0':
+                return "Cash on Delivery (COD)";
+            case '1':
+                return "Online Payment";
+            default:
+                return mode || "Standard";
+        }
+    }
 
     render() {
         const { order, notFound } = this.state;
 
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
+                <ToastContainer />
                 <div className="app-wrapper">
                     <Menu />
                     <main className="app-main">
@@ -98,7 +128,7 @@ export default class OrderDetail extends Component {
                                     <div className="col-sm-6">
                                         <nav aria-label="breadcrumb">
                                             <ol className="breadcrumb float-sm-end mb-0">
-                                                <li className="breadcrumb-item"><a href="orders.html">Orders</a></li>
+                                                <li className="breadcrumb-item"><Link to="/order">Orders</Link></li>
                                                 <li className="breadcrumb-item active" aria-current="page">Details</li>
                                             </ol>
                                         </nav>
@@ -112,9 +142,9 @@ export default class OrderDetail extends Component {
                                 
                                 {/* Action bar */}
                                 <div className="d-flex justify-content-between gap-2 mb-3 d-print-none">
-                                    <a href="orders.html" className="btn btn-outline-secondary">
+                                    <Link to="/order" className="btn btn-outline-secondary">
                                         <i className="bi bi-arrow-left me-1" aria-hidden="true" /> Back to Orders
-                                    </a>
+                                    </Link>
                                     <div className="d-flex gap-2">
                                         <button className="btn btn-outline-secondary" onClick={this.handlePrint} type="button">
                                             <i className="bi bi-printer me-1" aria-hidden="true" /> Print
@@ -135,79 +165,79 @@ export default class OrderDetail extends Component {
 
                                 {/* Invoice Details Card */}
                                 {order && (
-                                    <div id="invoiceCard" className="card">
+                                    <div id="invoiceCard" className="card shadow-sm">
                                         <div className="card-body p-4 p-md-5">
                                             
                                             {/* Header */}
                                             <div className="row mb-4">
                                                 <div className="col-sm-6">
-                                                    <h2 className="h4 mb-0 text-primary fw-semibold">Online Shop, Inc.</h2>
+                                                    <h2 className="h4 mb-0 text-primary fw-semibold">Online Shop Admin</h2>
                                                     <p className="text-secondary mb-0 small">
-                                                        123 Commerce Way, Suite 400<br />
-                                                        Boston, MA 02110<br />
-                                                        support@onlineshop.com
+                                                        Support & Orders Department<br />
+                                                        support@theeasylearnacademy.com
                                                     </p>
                                                 </div>
                                                 <div className="col-sm-6 text-sm-end mt-3 mt-sm-0">
                                                     <h1 className="h2 mb-1">Invoice</h1>
-                                                    <p className="text-secondary mb-0">
-                                                        <span className="fw-semibold">#</span><span>{order.id}</span>
+                                                    <p className="text-secondary mb-1">
+                                                        <span className="fw-semibold">Order ID: #</span><span>{order.id}</span>
                                                     </p>
-                                                    <span className={`badge mt-1 me-1 ${order.status === "Delivered" ? "text-bg-success" : order.status === "Pending" ? "text-bg-warning" : order.status === "Shipped" ? "text-bg-info" : "text-bg-secondary"}`}>
-                                                        {order.status}
-                                                    </span>
-                                                    <span className={`badge mt-1 ${order.payment === "Paid" ? "text-bg-success" : "text-bg-danger"}`}>
-                                                        {order.payment}
-                                                    </span>
+                                                    <div className="d-flex justify-content-sm-end gap-1">
+                                                        {this.getOrderStatusBadge(order.orderstatus)}
+                                                        {this.getPaymentStatusBadge(order.paymentstatus)}
+                                                    </div>
                                                 </div>
                                             </div>
 
                                             {/* Billing details */}
                                             <div className="row mb-4">
                                                 <div className="col-sm-6">
-                                                    <p class="text-secondary small mb-1">Billed to</p>
-                                                    <p className="mb-0 fw-semibold">{order.customer}</p>
-                                                    <p className="text-secondary small mb-1">{order.email}</p>
+                                                    <p className="text-secondary small mb-1 text-uppercase fw-semibold">Customer Details</p>
+                                                    <p className="mb-1 fw-bold fs-6">{order.fullname}</p>
+                                                    <p className="text-secondary small mb-1">
+                                                        <i className="bi bi-telephone me-1" /> {order.mobile || "N/A"}
+                                                    </p>
                                                     <p className="text-secondary small mb-0">
-                                                        {order.address.split(", ").map((line, idx) => (
-                                                            <span key={idx}>
-                                                                {line}
-                                                                <br />
-                                                            </span>
-                                                        ))}
+                                                        <i className="bi bi-geo-alt me-1" />
+                                                        {order.address1}
+                                                        {order.address2 && <>, {order.address2}</>}
+                                                        <br />
+                                                        {order.city} - {order.pincode}
                                                     </p>
                                                 </div>
                                                 <div className="col-sm-6 text-sm-end mt-3 mt-sm-0">
-                                                    <p className="text-secondary small mb-1">Order Date</p>
-                                                    <p className="mb-0">{order.date}</p>
+                                                    <p className="text-secondary small mb-1 text-uppercase fw-semibold">Order Information</p>
+                                                    <p className="mb-1"><strong>Order Date:</strong> {order.billdate}</p>
+                                                    <p className="mb-1"><strong>Payment Mode:</strong> {this.getPaymentMode(order.paymentmode)}</p>
                                                 </div>
                                             </div>
 
-                                            {/* Items Table */}
+                                            {/* Order Details Table */}
                                             <div className="table-responsive mb-3">
                                                 <table className="table align-middle mb-0">
-                                                    <thead>
+                                                    <thead className="table-light">
                                                         <tr>
-                                                            <th className="border-top-0">Product Description</th>
-                                                            <th className="border-top-0 text-end" style={{ width: "6rem" }}>Qty</th>
-                                                            <th className="border-top-0 text-end" style={{ width: "9rem" }}>Unit Price</th>
-                                                            <th className="border-top-0 text-end" style={{ width: "9rem" }}>Amount</th>
+                                                            <th>Description</th>
+                                                            <th>Payment Details</th>
+                                                            <th className="text-end">Total Amount</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {order.items.map((item, idx) => {
-                                                            const itemSubtotal = parseFloat(item.price.replace("$", "")) * item.qty;
-                                                            return (
-                                                                <tr key={idx}>
-                                                                    <td>
-                                                                        <p className="mb-0 fw-semibold">{item.name}</p>
-                                                                    </td>
-                                                                    <td className="text-end">{item.qty}</td>
-                                                                    <td className="text-end">{item.price}</td>
-                                                                    <td className="text-end">${itemSubtotal.toFixed(2)}</td>
-                                                                </tr>
-                                                            );
-                                                        })}
+                                                        <tr>
+                                                            <td>
+                                                                <p className="mb-0 fw-semibold">Order #{order.id} - Direct Purchase</p>
+                                                                {order.remarks && (
+                                                                    <small className="text-muted">Remarks: {order.remarks}</small>
+                                                                )}
+                                                            </td>
+                                                            <td>
+                                                                <div>{this.getPaymentMode(order.paymentmode)}</div>
+                                                                <small className="text-muted">Status: {order.paymentstatus === '2' ? 'Paid' : 'Unpaid'}</small>
+                                                            </td>
+                                                            <td className="text-end fw-bold fs-5 text-primary">
+                                                                ₹{Number(order.amount).toLocaleString('en-IN')}
+                                                            </td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -217,11 +247,13 @@ export default class OrderDetail extends Component {
                                                 <div className="col-md-5 col-lg-4">
                                                     <dl className="row mb-0">
                                                         <dt className="col-7 text-secondary fw-normal">Subtotal</dt>
-                                                        <dd className="col-5 text-end mb-2">{order.subtotal}</dd>
-                                                        <dt className="col-7 text-secondary fw-normal">Tax (8.25%)</dt>
-                                                        <dd className="col-5 text-end mb-2">{order.tax}</dd>
-                                                        <dt className="col-7 fw-semibold border-top pt-2">Total</dt>
-                                                        <dd className="col-5 text-end fw-semibold border-top pt-2 mb-0">{order.total} USD</dd>
+                                                        <dd className="col-5 text-end mb-2">₹{Number(order.amount).toLocaleString('en-IN')}</dd>
+                                                        <dt className="col-7 text-secondary fw-normal">Delivery Fee</dt>
+                                                        <dd className="col-5 text-end mb-2 text-success">FREE</dd>
+                                                        <dt className="col-7 fw-semibold border-top pt-2">Total Amount</dt>
+                                                        <dd className="col-5 text-end fw-semibold border-top pt-2 mb-0 text-primary fs-5">
+                                                            ₹{Number(order.amount).toLocaleString('en-IN')}
+                                                        </dd>
                                                     </dl>
                                                 </div>
                                             </div>
@@ -229,9 +261,7 @@ export default class OrderDetail extends Component {
                                             {/* Footer note */}
                                             <hr className="my-4" />
                                             <p className="text-secondary small mb-0">
-                                                Thanks for your business. Payment is due within 14 days of order. If you have any questions
-                                                about this invoice, please contact{" "}
-                                                <a href="mailto:billing@onlineshop.com">billing@onlineshop.com</a>.
+                                                Thank you for shopping with us! If you have any inquiries regarding this order, please contact support.
                                             </p>
                                         </div>
                                     </div>
@@ -245,3 +275,5 @@ export default class OrderDetail extends Component {
         );
     }
 }
+
+export default withHooks(OrderDetail);

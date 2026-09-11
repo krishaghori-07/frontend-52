@@ -13,7 +13,6 @@ import Orders from './orders';
 import Product from './product';
 import UpdateCategory from './update-category';
 import Users from './users';
-import UpdateProduct from './update-product';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import ViewProductDetail from './view-product-detail';
@@ -32,6 +31,7 @@ function MyRouter() {
                 <Route path='/category' element={<Category />} />
                 <Route path='/insert-category' element={<InsertCategory />} />
                 <Route path='/update-category' element={<UpdateCategory />} />
+                <Route path='/update-category/:categoryid' element={<UpdateCategory />} />
 
                 <Route path='/product' element={<Product />} />
                 <Route path='/insert-product' element={<InsertProduct />} />
@@ -40,10 +40,11 @@ function MyRouter() {
                 <Route path='/view-product-detail/:productid' element={<ViewProductDetail />} />
 
                 <Route path='/order-detail' element={<OrderDetail />} />
+                <Route path='/order-detail/:orderid' element={<OrderDetail />} />
                 <Route path='/order' element={<Orders />} />
+                <Route path='/orders' element={<Orders />} />
 
                 <Route path='/user' element={<Users />} />
-
             </Routes>
         </BrowserRouter>
     </CookiesProvider>);
