@@ -5,8 +5,9 @@ import axios from "axios";
 import { getBase } from "./common";
 import { showError } from "./messages";
 import { ToastContainer } from "react-toastify";
+import withHooks from "./hoc";
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,6 +24,15 @@ export default class Dashboard extends Component {
         };
     }
 
+    componentWillMount()
+    {
+        let adminid = this.props.cookies['adminid'];
+        console.log("admin id ",adminid);
+        if(adminid === undefined)
+        {
+            this.props.navigate("/login");
+        }
+    }
     componentDidMount() {
         let apiAddress = getBase() + "summery.php";
         let option = {
@@ -224,3 +234,4 @@ export default class Dashboard extends Component {
         );
     }
 }
+export default withHooks(Dashboard);

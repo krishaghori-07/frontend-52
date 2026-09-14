@@ -10,7 +10,7 @@ var options = {
     theme: "colored",
     transition: Bounce,
 }
-export function showError(message = "oops something went wrong, please try after sometime") {
+export function showError(message = "oops something went wrong, please try after sometimes") {
     toast.error(message, options);
 }
 export function showMessage(message) {

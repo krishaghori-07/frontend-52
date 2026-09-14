@@ -18,7 +18,8 @@ import { CookiesProvider } from 'react-cookie';
 import ViewProductDetail from './view-product-detail';
 //create routing function 
 function MyRouter() {
-    return (<CookiesProvider>
+    return (
+    <CookiesProvider>
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Login />} />
