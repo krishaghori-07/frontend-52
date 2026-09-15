@@ -1,6 +1,6 @@
 import React from "react";
 import Menu from "./menu";
-import { getBase, getImageBase } from "./common";
+import { getBase, getImageBase, verifyLogin } from "./common";
 import withHooks from "./hoc";
 import { showError } from "./messages";
 import { ToastContainer } from "react-toastify";
@@ -14,6 +14,9 @@ class ViewProductDetail extends React.Component {
         }
     }
     componentDidMount() {
+        if (!this.props.cookies || !this.props.cookies['adminid']) {
+            return;
+        }
         //whenever we want to fetch and display data from server, we use componentDidMount method
         let productid = this.props.params.productid;
         let apiAddress = getBase() + "product.php?productid=" + productid;
@@ -43,6 +46,9 @@ class ViewProductDetail extends React.Component {
         }).catch((error) => showError());
     }
     render() {
+        let redirect = verifyLogin(this.props.cookies);
+        if (redirect) return redirect;
+
         return (<div className="app-wrapper">
             <ToastContainer />
             <Menu />

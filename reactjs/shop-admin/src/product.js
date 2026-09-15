@@ -4,10 +4,15 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { showError, showMessage } from "./messages";
-import { getBase, getImageBase } from "./common";
-export default class Product extends Component {
+import { getBase, getImageBase, verifyLogin } from "./common";
+import withHooks from "./hoc";
+
+class Product extends Component {
 
     componentDidMount() {
+        if (!this.props.cookies || !this.props.cookies['adminid']) {
+            return;
+        }
         //this method executes after render method execute 1st time 
         //api call (fetch data from server)
         let apiAddress = getBase() + "product.php";
@@ -108,6 +113,9 @@ export default class Product extends Component {
     }
     render() {
 
+        let redirect = verifyLogin(this.props.cookies);
+        if (redirect) return redirect;
+
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
                 <ToastContainer />
@@ -174,3 +182,4 @@ export default class Product extends Component {
         );
     }
 }
+export default withHooks(Product);

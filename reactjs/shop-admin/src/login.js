@@ -4,12 +4,17 @@ import axios from 'axios';
 import { showError, showMessage } from './messages';
 import { ToastContainer } from "react-toastify";
 import withHooks from "./hoc";
+import { Navigate } from "react-router-dom";
 // create class component
 class Login extends React.Component {
     constructor(props) {
         super(props); //required
-        this.state = {};
+        this.state = {
+            email: '',
+            password: ''
+        };
     }
+
     updateValue = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -52,15 +57,16 @@ class Login extends React.Component {
                 }
                 else 
                 {
-                   // create cookies
-                    this.props.setCookie("adminid",response.data[3]['id']);
-                    console.log("admin id",this.props.cookies['adminid']);
+                   // create cookies accessible across all paths
+                    let adminId = response.data[3]['id'];
+                    this.props.setCookie("adminid", adminId, { path: '/' });
+                    console.log("admin id saved:", adminId);
                     showMessage(message);
                     // pause code for 2 seconds 
                     setTimeout(() => {
                         //change screen to dashboard
                         this.props.navigate("/dashboard");
-                    },3000);
+                    },2000);
                 }
             }
         }).catch((error) => {
@@ -68,6 +74,9 @@ class Login extends React.Component {
         });
     }
     render() {
+        if (this.props.cookies && this.props.cookies['adminid']) {
+            return <Navigate to="/dashboard" replace />;
+        }
         return (
             <div className="login-page bg-body-secondary">
                 <ToastContainer />

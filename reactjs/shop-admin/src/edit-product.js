@@ -1,7 +1,7 @@
 import { Component } from "react";
 import Menu from "./menu";
 import axios from "axios";
-import { getBase, getImageBase } from "./common";
+import { getBase, getImageBase, verifyLogin } from "./common";
 import { showError, showMessage } from "./messages";
 import withHooks from "./hoc";
 import { ToastContainer } from "react-toastify";
@@ -100,6 +100,9 @@ class EditProduct extends Component {
     }
 
     componentDidMount() {
+        if (!this.props.cookies || !this.props.cookies['adminid']) {
+            return;
+        }
         // whenever we want to fetch and display data from server, we use componentDidMount method
         this.fetchProduct();
         this.fetchCategories();
@@ -186,6 +189,9 @@ class EditProduct extends Component {
     }
 
     render() {
+        let redirect = verifyLogin(this.props.cookies);
+        if (redirect) return redirect;
+
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
                 <div className="app-wrapper">

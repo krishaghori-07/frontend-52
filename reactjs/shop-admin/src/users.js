@@ -3,9 +3,10 @@ import Menu from "./menu";
 import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
 import { showError, showMessage } from "./messages";
-import { getBase } from "./common";
+import { getBase, verifyLogin } from "./common";
+import withHooks from "./hoc";
 
-export default class Users extends Component {
+class Users extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,6 +15,9 @@ export default class Users extends Component {
     }
 
     componentDidMount() {
+        if (!this.props.cookies || !this.props.cookies['adminid']) {
+            return;
+        }
         let apiAddress = getBase() + "users.php";
         let option = {
             url: apiAddress,
@@ -70,6 +74,9 @@ export default class Users extends Component {
     }
 
     render() {
+        let redirect = verifyLogin(this.props.cookies);
+        if (redirect) return redirect;
+
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
                 <ToastContainer />
@@ -129,3 +136,4 @@ export default class Users extends Component {
         );
     }
 }
+export default withHooks(Users);

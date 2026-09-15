@@ -2,7 +2,7 @@ import { Component } from "react";
 import Menu from "./menu";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { getBase } from "./common";
+import { getBase, verifyLogin } from "./common";
 import { showError, showMessage } from "./messages";
 import { ToastContainer } from "react-toastify";
 import withHooks from "./hoc";
@@ -60,6 +60,9 @@ class OrderDetail extends Component {
     }
 
     componentDidMount() {
+        if (!this.props.cookies || !this.props.cookies['adminid']) {
+            return;
+        }
         this.fetchOrderDetail();
     }
 
@@ -111,6 +114,9 @@ class OrderDetail extends Component {
     }
 
     render() {
+        let redirect = verifyLogin(this.props.cookies);
+        if (redirect) return redirect;
+
         const { order, notFound } = this.state;
 
         return (

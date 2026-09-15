@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
 import { showError, showMessage } from "./messages";
-import { getBase, getImageBase } from "./common";
+import { getBase, getImageBase, verifyLogin } from "./common";
+import withHooks from "./hoc";
 
-export default class Category extends Component {
+class Category extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,6 +16,9 @@ export default class Category extends Component {
     }
 
     componentDidMount() {
+        if (!this.props.cookies || !this.props.cookies['adminid']) {
+            return;
+        }
         let apiAddress = getBase() + "category.php";
         let option = {
             url: apiAddress,
@@ -128,6 +132,9 @@ export default class Category extends Component {
     }
 
     render() {
+        let redirect = verifyLogin(this.props.cookies);
+        if (redirect) return redirect;
+
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
                 <ToastContainer />
@@ -189,3 +196,4 @@ export default class Category extends Component {
         );
     }
 }
+export default withHooks(Category);

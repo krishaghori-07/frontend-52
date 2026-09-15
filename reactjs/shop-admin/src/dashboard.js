@@ -2,7 +2,7 @@ import { Component } from "react";
 import Menu from "./menu";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { getBase } from "./common";
+import { getBase, verifyLogin } from "./common";
 import { showError } from "./messages";
 import { ToastContainer } from "react-toastify";
 import withHooks from "./hoc";
@@ -22,43 +22,44 @@ class Dashboard extends Component {
                 yearly: 0
             }
         };
+
     }
 
-    componentWillMount()
-    {
-        let adminid = this.props.cookies['adminid'];
-        console.log("admin id ",adminid);
-        if(adminid === undefined)
-        {
-            this.props.navigate("/login");
-        }
-    }
+
     componentDidMount() {
-        let apiAddress = getBase() + "summery.php";
-        let option = {
-            url: apiAddress,
-            method: 'get',
-            responseType: 'json'
-        };
+        let adminid = this.props.cookies ? this.props.cookies['adminid'] : undefined;
+        console.log("admin id ", adminid);
+        if (adminid) {
+            let apiAddress = getBase() + "summery.php";
+            let option = {
+                url: apiAddress,
+                method: 'get',
+                responseType: 'json'
+            };
 
-        axios(option).then((response) => {
-            console.log(response.data);
-            let error = response.data[0]['error'];
-            if (error !== 'no') {
-                showError(error);
-            }
-            else {
-                let summaryData = response.data[1];
-                this.setState({
-                    summary: summaryData
-                });
-            }
-        }).catch((error) => {
-            showError();
-        });
+            axios(option).then((response) => {
+                console.log(response.data);
+                let error = response.data[0]['error'];
+                if (error !== 'no') {
+                    showError(error);
+                }
+                else {
+                    let summaryData = response.data[1];
+                    this.setState({
+                        summary: summaryData
+                    });
+                }
+            }).catch((error) => {
+                showError();
+            });
+        }
+
     }
 
     render() {
+        let redirect = verifyLogin(this.props.cookies);
+        if (redirect) return redirect;
+
         const { summary } = this.state;
 
         return (
@@ -87,10 +88,10 @@ class Dashboard extends Component {
 
                         <div className="app-content">
                             <div className="container-fluid">
-                                
+
                                 {/* FIRST LINE: Category, Products, Users, Orders */}
                                 <div className="row mb-3">
-                                    
+
                                     {/* Category widget */}
                                     <div className="col-lg-3 col-sm-6 col-12 mb-3">
                                         <div className="small-box text-bg-primary shadow-sm h-100 d-flex flex-column justify-content-between">
@@ -159,7 +160,7 @@ class Dashboard extends Component {
 
                                 {/* SECOND LINE: Today order, Monthly order, Weekly order, Yearly order */}
                                 <div className="row">
-                                    
+
                                     {/* Today Order widget */}
                                     <div className="col-lg-3 col-sm-6 col-12 mb-3">
                                         <div className="small-box text-bg-info shadow-sm h-100 d-flex flex-column justify-content-between">

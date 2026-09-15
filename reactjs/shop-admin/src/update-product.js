@@ -1,12 +1,17 @@
 import { Component } from "react";
 import Menu from "./menu";
+import { verifyLogin } from "./common";
+import withHooks from "./hoc";
 
-export default class UpdateProduct extends Component {
+class UpdateProduct extends Component {
     handleSubmit = (e) => {
         alert("Product updated successfully!");
     };
 
     render() {
+        let redirect = verifyLogin(this.props.cookies);
+        if (redirect) return redirect;
+
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
                 <div className="app-wrapper">
@@ -148,3 +153,4 @@ export default class UpdateProduct extends Component {
         );
     }
 }
+export default withHooks(UpdateProduct);

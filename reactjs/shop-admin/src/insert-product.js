@@ -1,6 +1,6 @@
 import { Component } from "react";
 import Menu from "./menu";
-import { getBase } from "./common";
+import { getBase, verifyLogin } from "./common";
 import axios from "axios";
 import { showError, showMessage } from "./messages";
 import { ToastContainer } from "react-toastify";
@@ -89,6 +89,9 @@ class InsertProduct extends Component {
     }
 
     componentDidMount() {
+        if (!this.props.cookies || !this.props.cookies['adminid']) {
+            return;
+        }
         let apiAddress = getBase() + "category.php";
         let option = {
             url: apiAddress,
@@ -122,6 +125,9 @@ class InsertProduct extends Component {
     }
    
     render() {
+        let redirect = verifyLogin(this.props.cookies);
+        if (redirect) return redirect;
+
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
                 <div className="app-wrapper">

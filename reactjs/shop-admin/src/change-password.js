@@ -1,7 +1,9 @@
 import { Component } from "react";
 import Menu from "./menu";
+import { verifyLogin } from "./common";
+import withHooks from "./hoc";
 
-export default class ChangePassword extends Component {
+class ChangePassword extends Component {
     validatePassword = (event) => {
         const oldPass = document.getElementById("oldPassword").value;
         const newPass = document.getElementById("newPassword").value;
@@ -24,6 +26,9 @@ export default class ChangePassword extends Component {
     };
 
     render() {
+        let redirect = verifyLogin(this.props.cookies);
+        if (redirect) return redirect;
+
         return (
             <div className="layout-fixed sidebar-expand-lg bg-body-tertiary">
                 <div className="app-wrapper">
@@ -106,3 +111,4 @@ export default class ChangePassword extends Component {
         );
     }
 }
+export default withHooks(ChangePassword);

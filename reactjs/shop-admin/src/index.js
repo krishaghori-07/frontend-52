@@ -16,6 +16,7 @@ import Users from './users';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import ViewProductDetail from './view-product-detail';
+import Logout from './logout';
 //create routing function 
 function MyRouter() {
     return (
@@ -24,6 +25,7 @@ function MyRouter() {
             <Routes>
                 <Route path='/' element={<Login />} />
                 <Route path='/login' element={<Login />} />
+                <Route path='/logout' element={<Logout />} />
                 <Route path='/dashboard' element={<Dashboard />} />
 
                 <Route path='/forgot-password' element={<ForgotPassword />} />
