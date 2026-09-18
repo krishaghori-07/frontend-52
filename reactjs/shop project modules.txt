@@ -44,8 +44,9 @@ Types of users
 	-----------------------------------------------	
         register, 
         login  & logout, 
-        change password, 
         recover account
+        change password, 
+        Home 
         browse products (shop), 
         manage cart, 
         place orders 
