@@ -2,16 +2,44 @@ import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
-
+import { getBase } from '../common';
+import axios from 'axios';
+import { showError,showMessage } from '../messages';
+import { ToastContainer } from 'react-toastify';
+import { useState, useEffect } from 'react';
 function SiteHome() {
   const publicUrl = process.env.PUBLIC_URL || '';
+  //create state array 
+  let [categories, setCategories] = useState([]);
+  let [products, setProducts] = useState([]);
+  let fetchCategory = function () {
+    let apiAddress = getBase() + "category.php";
+    let option = {
+      method :'get',
+      responseType:'json',
+      url:apiAddress
+    };
 
+    axios(option).then((response) => {
+        console.log(response.data);
+    }).catch((error) => {
+        showError();
+    });
+  }
+  let fetchProduct = function () {
+
+  }
+  useEffect(() => {
+    fetchCategory();
+    fetchProduct();
+  })
   return (
     <>
       <Header activePage="home" />
 
       {/* Featured Categories Section */}
       <section className="featured-categories section">
+        <ToastContainer />
         <div className="container">
           <div className="row">
             <div className="col-12">

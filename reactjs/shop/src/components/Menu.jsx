@@ -1,24 +1,11 @@
 import React, { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 function Menu({ activePage = 'home' }) {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
   };
-
-  const navLinks = [
-    { label: 'Home', href: '#/', id: 'home' },
-    { label: 'Products', href: '#/products', id: 'products' },
-    { label: 'Product Detail', href: '#/product-detail', id: 'product-detail' },
-    { label: 'Cart', href: '#/cart', id: 'cart' },
-    { label: 'Checkout', href: '#/checkout', id: 'checkout' },
-    { label: 'Login', href: '#/login', id: 'login' },
-    { label: 'Register', href: '#/register', id: 'register' },
-    { label: 'Change Password', href: '#/change-password', id: 'change-password' },
-    { label: 'Forgot Password', href: '#/forgot-password', id: 'forgot-password' },
-  ];
-
   return (
     <nav className="navbar navbar-expand-lg">
       <button
@@ -35,22 +22,54 @@ function Menu({ activePage = 'home' }) {
       </button>
 
       <div
-        className={`collapse navbar-collapse sub-menu-bar ${isNavOpen ? 'show' : ''}`}
-        id="navbarSupportedContent"
-      >
+        className='collapse navbar-collapse sub-menu-bar' 
+        id="navbarSupportedContent" >
         <ul id="nav" className="navbar-nav ms-auto">
-          {navLinks.map((link) => (
-            <li key={link.id} className="nav-item">
-              <a
-                href={link.href}
-                className={activePage === link.id ? 'active' : ''}
-                aria-label="Toggle navigation"
-                onClick={() => setIsNavOpen(false)}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+          <Link
+            to="/" className='nav-link'
+            aria-label="Toggle navigation" >
+              Home 
+          </Link>
+           <Link
+            to="/shop" className='nav-link'
+            aria-label="Toggle navigation" >
+              Shop 
+          </Link>
+           <Link
+            to="/login" className='nav-link'
+            aria-label="Toggle navigation" >
+              Login 
+          </Link>
+           <Link
+            to="/register" className='nav-link'
+            aria-label="Toggle navigation" >
+              Register 
+          </Link>
+           <Link
+            to="/forgot-password" className='nav-link'
+            aria-label="Toggle navigation" >
+              Forgot password 
+          </Link>
+           <Link
+            to="/Cart" className='nav-link'
+            aria-label="Toggle navigation" >
+              Cart 
+          </Link>
+           <Link
+            to="/checkout" className='nav-link'
+            aria-label="Toggle navigation" >
+              Checkout 
+          </Link>
+           <Link
+            to="/change-password" className='nav-link'
+            aria-label="Toggle navigation" >
+              Change Password 
+          </Link>
+           <Link
+            to="/" className='nav-link'
+            aria-label="Toggle navigation" >
+              Logout   
+          </Link>
         </ul>
       </div>
     </nav>
