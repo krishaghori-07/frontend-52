@@ -1,0 +1,3 @@
+task : convert below html files  info separate functional components.
+    work upon all files whose name start with site_ but ignore site_template.html. 
+    all css and javascript files should be linked in src/index.html file. if any code in all above html files are repeated in multiple files like header menu footer it should store in separate functional components and used in jsx file 
