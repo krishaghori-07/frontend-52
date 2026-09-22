@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {BrowserRouter,Routes,Route} from 'react-router-dom';
+import {BrowserRouter,Routes,Route,Link} from 'react-router-dom';
 import {
   SiteHome,
   SiteProducts,
@@ -19,6 +19,7 @@ function MyRouter()
     return (<BrowserRouter>
       <Routes>
           <Route path='/' element={<SiteHome />} />
+          <Route path='/shop/:categoryid' element={<SiteProducts /> } />
           <Route path='/shop' element={<SiteProducts /> } />
           <Route path='/product-detail' element={<SiteProductDetail /> } />
           <Route path='/cart' element={<SiteCart /> } />

@@ -7,8 +7,8 @@ import axios from 'axios';
 import { showError, showMessage } from '../messages';
 import { ToastContainer } from 'react-toastify';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 function SiteHome() {
-  const publicUrl = process.env.PUBLIC_URL || '';
   //create state array 
   let [categories, setCategories] = useState([]);
   let [products, setProducts] = useState([]);
@@ -106,10 +106,11 @@ function SiteHome() {
               return (<div className="col-lg-3 col-md-6 col-12">
                 <div className="card shadow">
                   <div className="card-body">
-                    <a href="#/products">
+                    {/* dynamic route */}
+                    <Link to={"shop/" + item.id}>
                       <h3 className="my-2 text-center">{item.title}</h3>
                       <img src={getImageBase() + "category/" + item['photo']} className="img-fluid" alt="HeadPhone Category" />
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>);
